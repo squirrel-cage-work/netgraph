@@ -64,7 +64,7 @@ Node Example
 CREATE (s000001:Switch {name: 'Switch000001', Tenant: '[UserA, UserB, UserC]'})
 
 // Interfaces with Switch000001
-CREATE (i000001:Interface {name: '0/1', Tenant: '[UserA, UserB]', Tag: 'True})
+CREATE (i000001:Interface {name: '0/1', Tenant: '[UserA, UserB]', Tag: 'True'})
 CREATE (i000002:Interface {name: '0/2', Tenant: '[UserC]', Tag: 'False'})
 
 // VLAN with Interface 0/1 of Switch000001
@@ -73,22 +73,51 @@ CREATE (v000002:VLAN {name: '20', Tenant: '[UserB]'})
 
 // VLAN with Interface 0/1 of Switch000001
 CREATE (v000003:VLAN {name: '30', Tenant: '[UserC]'})
-```
 
-Relationship Example
-```
 // Relationship between Switch000001 and Interface0/1 and 0/2
-CREATE (s000001)-[:Direct { Type: "GigabitEthernet", Tenant: '[UserA, UserB]' }]->(i000001)
-CREATE (s000001)-[:Direct { Type: "GigabitEthernet", Tenant: '[UserC]'}]->(i000002)
+CREATE (s000001)-[:HAS_INTERFACE { Type: "GigabitEthernet", Tenant: '[UserA, UserB]' }]->(i000001)
+CREATE (s000001)-[:HAS_INTERFACE { Type: "GigabitEthernet", Tenant: '[UserC]'}]->(i000002)
 
 // Relationship between Interface0/1,2 and vlan10,20 
-CREATE (i000001)-[:Direct { Type: "Virtualization", Tenant: '[UserA]'}]->(v000001)
-CREATE (i000001)-[:Direct { Type: "Virtualization", Tenant: '[UserB]'}]->(v000002)
-CREATE (i000002)-[:Direct { Type: "Virtualization", Tenant: '[UserB]'}]->(v000003)
+CREATE (i000001)-[:ASSOCIATED_WITH  { Type: "VLAN", Tenant: '[UserA]'}]->(v000001)
+CREATE (i000001)-[:ASSOCIATED_WITH  { Type: "VLAN", Tenant: '[UserB]'}]->(v000002)
+CREATE (i000002)-[:ASSOCIATED_WITH  { Type: "VLAN", Tenant: '[UserB]'}]->(v000003)
+
+// Switch000002
+CREATE (s000002:Switch {name: 'Switch000002', Tenant: '[UserA, UserB, UserC]'})
+
+// Interfaces with Switch000001
+CREATE (i000003:Interface {name: '0/1', Tenant: '[UserA, UserB]', Tag: 'True'})
+CREATE (i000004:Interface {name: '0/2', Tenant: '[UserC]', Tag: 'False'})
+
+// VLAN with Interface 0/1 of Switch000001
+CREATE (v000004:VLAN {name: '10', Tenant: '[UserA]'})
+CREATE (v000005:VLAN {name: '20', Tenant: '[UserB]'})
+
+// VLAN with Interface 0/1 of Switch000001
+CREATE (v000006:VLAN {name: '30', Tenant: '[UserC]'})
+
+// Relationship between Switch000001 and Interface0/1 and 0/2
+CREATE (s000002)-[:HAS_INTERFACE { Type: "GigabitEthernet", Tenant: '[UserA, UserB]' }]->(i000003)
+CREATE (s000002)-[:HAS_INTERFACE { Type: "GigabitEthernet", Tenant: '[UserC]'}]->(i000004)
+
+// Relationship between Interface0/1,2 and vlan10,20 
+CREATE (i000003)-[:ASSOCIATED_WITH { Type: "VLAN", Tenant: '[UserA]'}]->(v000004)
+CREATE (i000003)-[:ASSOCIATED_WITH { Type: "VLAN", Tenant: '[UserB]'}]->(v000005)
+
+CREATE (v000001)-[:CONNECTED_TO { Type: "VLAN", Tenant: '[UserA]'}]->(v000004)
+CREATE (v000004)-[:CONNECTED_TO { Type: "VLAN", Tenant: '[UserA]'}]->(v000001)
+
+CREATE (v000002)-[:CONNECTED_TO { Type: "VLAN", Tenant: '[UserB]'}]->(v000005)
+CREATE (v000005)-[:CONNECTED_TO { Type: "VLAN", Tenant: '[UserB]'}]->(v000002)
+
+CREATE (v000003)-[:CONNECTED_TO { Type: "VLAN", Tenant: '[UserC]'}]->(i000004)
+CREATE (i000004)-[:CONNECTED_TO { Type: "VLAN", Tenant: '[UserC]'}]->(v000003)
 ```
 
 Neo4j View
-![image](https://github.com/squirrel-cage-work/netgraph/assets/87857140/a2357ba0-06ca-4706-9925-3da8cc106400)
+![neo4j_network_topology_9](https://github.com/user-attachments/assets/e0b7bc6f-d5c3-4537-aa94-2e7e9285e776)
+
 
 #### Router Interface（修正前）
 
