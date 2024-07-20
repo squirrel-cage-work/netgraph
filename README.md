@@ -9,7 +9,8 @@
 1. **Switch**: ネットワークスイッチ
 2. **Router**: ネットワークルータ
 3. **Interface**: 物理インターフェース
-4. **VLAN**:VLAN
+4. **VLAN**: VLAN
+5. **VRF**: VRF
 
 ## データモデル
 
@@ -26,6 +27,10 @@
 3. **VLAN**
     - 属性: name, Tenant
     - 例: `(v000001:VLAN {name: '10', Tenant: '[UserA]'})`
+  
+4. **VRF**
+   - 属性: name, Tenant
+   - 例: `CREATE (vr000001:VRF {name: '10', Tenant: '[UserA]'})`
 
 ### リレーションシップ
 
@@ -33,11 +38,17 @@
    - スイッチとインターフェースの関係
    - 属性: Type, Tenant
    - 例: `(s000001)-[:HAS_INTERFACE { Type: "GigabitEthernet", Tenant: '[UserA, UserB]' }]->(i000001)`
+   - ルータとインターフェースの関係
+   - 属性: Type, Tenant
+   - 例: `(r000001)-[:HAS_INTERFACE { Type: "GigabitEthernet", Tenant: '[UserA, UserB]' }]->(i000001)`
 
 2. **ASSOCIATED_WITH**
-   - インターフェースとVLANの関係
+   - スイッチインターフェースとVLANの関係
    - 属性: Type, Tenant
    - 例: `(i000001)-[:ASSOCIATED_WITH { Type: "VLAN", Tenant: '[UserA]'}]->(v000001)`
+   - ルータインターフェースとVRFの関係
+   - 属性: Type, Tenant
+   - 例: `(i000001)-[:ASSOCIATED_WITH { Type: "VRF", Tenant: '[UserA]' }]->(vr000001)`
   
 3. **CONNECTED_TO**
    - 接続
@@ -123,38 +134,28 @@ Neo4j View
 
 ![image](https://github.com/squirrel-cage-work/netgraph/assets/87857140/2b88923d-e32c-4798-8c6f-2c78ca6d69de)
 
-以下のようなケースの場合の Neo4j 上での Router Interface の rule は以下の通り。
-
-- Node
-  - Router 筐体
-    - properties : name = Router ホスト名, Tenant = 収容されている部署やユーザなど
-  - Router Interface
-    - properties : name = Interface 名, Tenant = 収容されている部署やユーザなど
-- VLAN / VRF
-  - properties : name = VLAN ID, Tenant = 収容されている部署やユーザなど
-
-- Relationship
-  - Router 筐体 --> Router Interface --> VLAN/VRF
-
 Node Example
 ``` example
 CREATE (r000001:Router {name: 'Router000001', Tenant: '[UserA, UserB]'})
 
+// Interfaces with Router000001
 CREATE (i000001:Interface {name: '0/1', Tenant: '[UserA, UserB]'})
-CREATE (i000002:Interface {name: '0/2'})
+CREATE (i000002:Interface {name: '0/2', Tenant: 'None'})
 
-CREATE (v000001:VLANVRF {name: '10', Tenant: '[UserA]'})
-CREATE (v000002:VLANVRF {name: '20', Tenant: '[UserB]'})
-````
+// VLANVRF for Interfaces of Router000001
+CREATE (vr000001:VRF {name: '10', Tenant: '[UserA]'})
+CREATE (vr000002:VRF {name: '20', Tenant: '[UserB]'})
 
-Relationship Example
+// Relationships between Router000001 and Interfaces
+CREATE (r000001)-[:HAS_INTERFACE { Type: "GigabitEthernet", Tenant: '[UserA, UserB]' }]->(i000001)
+CREATE (r000001)-[:HAS_INTERFACE { Type: "GigabitEthernet", Tenant: 'None' }]->(i000002)
+
+// Relationships between Interfaces and VLANVRFs
+CREATE (i000001)-[:ASSOCIATED_WITH { Type: "VRF", Tenant: '[UserA]' }]->(vr000001)
+CREATE (i000001)-[:ASSOCIATED_WITH { Type: "VRF", Tenant: '[UserB]' }]->(vr000002)
 ```
-CREATE (r000001)-[:Direct { Type: "GigabitEthernet", Tenant: '[UserA, UserB]' }]->(i000001)
-CREATE (r000001)-[:Direct { Type: "GigabitEthernet"}]->(i000002)
+![neo4j_network_topology_10](https://github.com/user-attachments/assets/4026a7c3-7e80-4435-8211-9fe6f1908c7d)
 
-CREATE (i000001)-[:Direct { Type: "Virtualization", Tenant: '[UserA]'}]->(v000001)
-CREATE (i000001)-[:Direct { Type: "Virtualization", Tenant: '[UserB]'}]->(v000002)
-```
 
 Neo4j View
 ![image](https://github.com/squirrel-cage-work/netgraph/assets/87857140/96a48729-9a42-4e9f-b1dd-db55bca4a99e)
