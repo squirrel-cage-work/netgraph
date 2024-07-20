@@ -18,30 +18,46 @@
 1. **Switch**
    - 属性: name, Tenant
    - 例: `(s000001:Switch {name: 'Switch000001', Tenant: '[UserA, UserB, UserC]'})`
+     
+2. **Interface**
+   - 属性: name, Tenant, tag
+   - 例: `(i000001:Interface {name: '0/1', Tenant: '[UserA, UserB]', Tag: 'True'})`
 
-### Switch Interface
+3. **VLAN**
+    - 属性: name, Tenant
+    - 例: `(v000001:VLAN {name: '10', Tenant: '[UserA]'})`
 
-- Not Support
-  - access port
-  - 他多数
-- Support
-  - simple trunk port
+### リレーションシップ
+
+1. **HAS_INTERFACE**
+   - スイッチとインターフェースの関係
+   - 属性: Type, Tenant
+   - 例: `(s000001)-[:HAS_INTERFACE { Type: "GigabitEthernet", Tenant: '[UserA, UserB]' }]->(i000001)`
+
+2. **ASSOCIATED_WITH**
+   - インターフェースとVLANの関係
+   - 属性: Type, Tenant
+   - 例: `(i000001)-[:ASSOCIATED_WITH { Type: "VLAN", Tenant: '[UserA]'}]->(v000001)`
+  
+3. **CONNECTED_TO**
+   - 接続
+   - 属性: Type, Tenant
+   - 例: `(v000001)-[:CONNECTED_TO { Type: "VLAN", Tenant: '[UserA]'}]->(v000004)`
+
+## 特徴
+
+1. **マルチテナント対応**: 各ノードとリレーションシップに`Tenant`属性があるため、複数のユーザーやグループによるリソース共有が可能になります。
+
+2. **柔軟な属性管理**: 必要に応じて各ノードやリレーションシップに属性を追加できます。
+
+3. **階層構造**: Switch, Router, Interface, VLAN の階層関係を表現します。
+
+4. **物理/論理分離**: 物理的な接続（HAS_INTERFACE）と論理的な関連（ASSOCIATED_WITH, CONNECTED_TO）を区別します。
+
+### Switch Interface（修正前）
     
 ![image](https://github.com/squirrel-cage-work/netgraph/assets/87857140/06dd0e90-f998-40da-a8ed-a7f72132e72b)
-
-- Node
-  - Switch 筐体
-    - properties name = Switch ホスト名, Tenant = 収容されている部署やユーザなど 
-  - Switch Interface
-    - properties name = Interface 名, Tenant = 収容されている部署やユーザなど, Tag = True/False
-  - VLAN
-    - properties name = VLAN ID, Tenant = 収容されているユーザ
    
-- Relationship
-  - Siwtch 筐体 -(1)-> Switch Interface -(2)-> VLAN
-    - (1) properties Type = GigabitEthernet etc.., Tenant = 収容されている部署やユーザなど
-    - (2) properties Type = Virtualization, Tenant = 収容されている部署やユーザなど
-
 Node Example
 ```
 // Switch000001
@@ -74,7 +90,7 @@ CREATE (i000002)-[:Direct { Type: "Virtualization", Tenant: '[UserB]'}]->(v00000
 Neo4j View
 ![image](https://github.com/squirrel-cage-work/netgraph/assets/87857140/a2357ba0-06ca-4706-9925-3da8cc106400)
 
-#### Router Interface 
+#### Router Interface（修正前）
 
 ![image](https://github.com/squirrel-cage-work/netgraph/assets/87857140/2b88923d-e32c-4798-8c6f-2c78ca6d69de)
 
