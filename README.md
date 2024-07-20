@@ -129,7 +129,6 @@ CREATE (i000004)-[:CONNECTED_TO { Type: "VLAN", Tenant: '[UserC]'}]->(v000003)
 Neo4j View
 ![neo4j_network_topology_9](https://github.com/user-attachments/assets/e0b7bc6f-d5c3-4537-aa94-2e7e9285e776)
 
-
 #### Router Interface（修正前）
 
 ![image](https://github.com/squirrel-cage-work/netgraph/assets/87857140/2b88923d-e32c-4798-8c6f-2c78ca6d69de)
@@ -154,8 +153,6 @@ CREATE (r000001)-[:HAS_INTERFACE { Type: "GigabitEthernet", Tenant: 'None' }]->(
 CREATE (i000001)-[:ASSOCIATED_WITH { Type: "VRF", Tenant: '[UserA]' }]->(vr000001)
 CREATE (i000001)-[:ASSOCIATED_WITH { Type: "VRF", Tenant: '[UserB]' }]->(vr000002)
 ```
-![neo4j_network_topology_10](https://github.com/user-attachments/assets/4026a7c3-7e80-4435-8211-9fe6f1908c7d)
-
 
 Neo4j View
 ![image](https://github.com/squirrel-cage-work/netgraph/assets/87857140/96a48729-9a42-4e9f-b1dd-db55bca4a99e)
