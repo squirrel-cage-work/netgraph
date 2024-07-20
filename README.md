@@ -157,5 +157,4 @@ CREATE (i000001)-[:ASSOCIATED_WITH { Type: "VRF", Tenant: '[UserB]' }]->(vr00000
 Neo4j View
 ![image](https://github.com/squirrel-cage-work/netgraph/assets/87857140/96a48729-9a42-4e9f-b1dd-db55bca4a99e)
 
-### Switch Interface
 
