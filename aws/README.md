@@ -21,9 +21,9 @@ neo4j-password
 
 ### API
 
-#### Dashbord
+#### Dashboard API Response
 
-```Dashboard API Response:
+```
 {
   "statusCode": 200,
   "totalswitches": 3
