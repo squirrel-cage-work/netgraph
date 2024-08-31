@@ -7,8 +7,7 @@ pip install -t ./python neo4j==5.20.0
 zip -r neo4j.zip python/
 ```
 
-Create a lambda layer using the zip file you created above. Upload the zip file with any name and select Python 3.12 as the runtime.
-Also, attach appropriate policies to allow access to SSM.
+Create a lambda layer using the zip file created above; upload the zip file with any name and select Python 3.12 as the runtime. Also Attach an appropriate policy allowing access to SSM and set the timeout to 10 seconds.
 
 ### Systems Manager Parameter Store
 
