@@ -19,6 +19,17 @@ neo4j-username
 neo4j-password
 ```
 
+### API
+
+#### Dashbord
+
+```Dashboard API Response:
+{
+  "statusCode": 200,
+  "totalswitches": 3
+}
+```
+
 
 
 
