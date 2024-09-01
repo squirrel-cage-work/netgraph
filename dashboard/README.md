@@ -8,15 +8,13 @@
 
 1. Include your api gateway path in config.js.
 
-## Tenant Management
+## Tenant
 
 You can create tenants, which are You can register a unique tenant ID and any name.
 
 ![image](https://github.com/user-attachments/assets/915079d7-58ab-49ab-8719-756704d03334)
 
-
-
-### Tenant Management API and Graph 
+### Tenant API and Graph 
 
 The API definitions are as follows.
 
@@ -59,4 +57,8 @@ MATCH (t:Tenant)
 RETURN t.id AS TenantID, t.name AS TenantName
 ORDER BY t.id
 ```
+## Devices
+
+### Switches
+
 
