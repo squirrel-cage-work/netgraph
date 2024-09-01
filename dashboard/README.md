@@ -73,6 +73,7 @@ The API definitions are as follows.
 * Method : GET, POST, PUT, DELETE
 ```Body
 {
+  "tenantName": string [option]
 }
 ```
 
