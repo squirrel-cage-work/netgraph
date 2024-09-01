@@ -1,7 +1,7 @@
 # Network Configuration Management Project: netgraph
 
 The project aims to use a graph database to manage complex network configurations.
-Learn more about dashboards [here](https://github.com/squirrel-cage-work/netgraph/tree/main/dashboard) and about backend [here]([https://github.com/squirrel-cage-work/netgraph/tree/main/aws](https://github.com/squirrel-cage-work/netgraph/tree/main/backend)).
+Learn more about dashboards [here](https://github.com/squirrel-cage-work/netgraph/tree/main/dashboard) and about backend [here]([https://github.com/squirrel-cage-work/netgraph/tree/main/aws](https://github.com/squirrel-cage-work/netgraph/tree/main/backend).
 
 ## 概要
 
