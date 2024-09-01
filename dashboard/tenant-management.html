@@ -6,7 +6,6 @@
     <title>NetGraph - Tenant Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <link href="css/menu.css" rel="stylesheet">
     <script src="js/config.js" defer></script>
     <script src="js/menu.js" defer></script>
     <script src="js/tenant-management.js" defer></script>
@@ -49,6 +48,10 @@
                         <!-- Tenant List -->
                         <div id="tenantList" class="bg-white shadow rounded-lg p-6 mt-6">
                             <h2 class="text-lg font-bold mb-4">Tenant List</h2>
+                            <!-- Search Box -->
+                            <div class="mb-4">
+                                <input type="text" id="searchTenant" placeholder="Search tenants..." class="w-full px-3 py-2 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring focus:border-blue-300">
+                            </div>
                             <div class="overflow-x-auto">
                                 <table class="min-w-full divide-y divide-gray-200">
                                     <thead class="bg-gray-50">
