@@ -25,6 +25,10 @@ You can create tenants, which are You can register a unique tenant ID and any na
 }
 ```
 
+```
+CREATE CONSTRAINT uniqueTenantId FOR (t:Tenant) REQUIRE (t.id) IS UNIQUE;
+```
+
 ``` CREATE
 CREATE (t:Tenant {id: '123456789', name: 'hoge'})
 RETURN t
