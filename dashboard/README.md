@@ -59,11 +59,17 @@ ORDER BY t.id
 ```
 ## Devices
 
+The API definitions are as follows.
+
+* Path : /devices/{deviceType}/{deviceName}
+  * deviceType : switches, routers
+* Method : GET, POST, PUT, DELETE
+
 ### Switches
 
 The API definitions are as follows.
 
-* Path : /devices/switches/{switchName}
+* Path : /devices/switches/{deviceName}
 * Method : GET, POST, PUT, DELETE
 ```Body
 {
