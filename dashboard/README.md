@@ -35,22 +35,26 @@ CREATE CONSTRAINT uniqueTenantId FOR (t:Tenant) REQUIRE (t.id) IS UNIQUE;
 ```
 
 ```CREATE(POST)
+// CREATE (POST)
 CREATE (t:Tenant {id: '123456789', name: 'hoge'})
 RETURN t
 ```
 
 ```UPDATE(PUT)
+// UPDATE (PUT)
 MATCH (t:Tenant {id: '123456789'})
 SET t.name = 'huga'
 RETURN t
 ```
 
 ```DELETE(DELETE)
+// DELETE (DELETE)
 MATCH (t:Tenant {tenantId: 'tenant123'})
 DELETE t
 ```
 
 ```GET(GET)
+// GET (GET)
 MATCH (t:Tenant)
 RETURN t.id AS TenantID, t.name AS TenantName
 ORDER BY t.id
