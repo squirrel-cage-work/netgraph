@@ -3,40 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NetGraph</title>
+    <title>NetGraph Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="css/menu.css" rel="stylesheet">
     <script src="js/config.js" defer></script>
+    <script src="js/menu.js" defer></script>
     <script src="js/dashboard-count.js" defer></script>
 </head>
 <body class="h-full">
     <div class="min-h-full flex">
         <!-- Left Side Menu -->
-        <nav class="bg-gray-800 w-64 flex-shrink-0">
-            <div class="h-16 flex items-center justify-center">
-                <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow">
-            </div>
-            <div class="mt-5 flex-grow flex flex-col">
-                <div class="flex-1 space-y-1">
-                    <a href="#" class="bg-gray-900 text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                        <i class="fas fa-home mr-3 h-6 w-6"></i>
-                        Dashboard
-                    </a>
-                    <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                        <i class="fas fa-project-diagram mr-3 h-6 w-6"></i>
-                        Graph
-                    </a>
-                    <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                        <i class="fas fa-users mr-3 h-6 w-6"></i>
-                        IPAM
-                    </a>
-                    <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                        <i class="fas fa-calendar mr-3 h-6 w-6"></i>
-                        VLAN
-                    </a>
-                </div>
-            </div>
-        </nav>
+        <div id="menu-container" class="w-64 flex-shrink-0"></div>
 
         <!-- Main Content Area -->
         <div class="flex-1 flex flex-col overflow-hidden">
@@ -49,6 +27,7 @@
                 <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                     <div class="px-4 py-6 sm:px-0">
                         <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                            <!-- Cards start -->
                             <div class="bg-white overflow-hidden shadow rounded-lg">
                                 <div class="p-5">
                                     <div class="flex items-center">
@@ -90,7 +69,7 @@
                                                 </dt>
                                                 <dd>
                                                     <div id="totalswitches" class="text-lg font-medium text-gray-900">
-
+                                                        <!-- JSで更新 -->
                                                     </div>
                                                 </dd>
                                             </dl>
@@ -105,7 +84,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="bg-white overflow-hidden shadow rounded-lg">
                                 <div class="p-5">
                                     <div class="flex items-center">
@@ -134,11 +112,13 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Cards end -->
                         </div>
                     </div>
                 </div>
             </main>
         </div>
     </div>
+
 </body>
 </html>
