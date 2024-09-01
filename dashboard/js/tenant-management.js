@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const form = document.getElementById("tenantForm");
     const tenantList = document.getElementById("tenants");
     const submitActionsButton = document.getElementById("submitActionsButton");
+    const searchInput = document.getElementById("searchTenant");
+
+    let tenants = []; // テナントデータを保持する配列
 
     form.addEventListener("submit", async function(event) {
         event.preventDefault();
@@ -10,7 +13,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (tenantId && tenantName) {
             await createTenant(tenantId, tenantName);
-            addTenantToList(tenantId, tenantName);
+            tenants.push({ tenantId, tenantName });
+            renderTenants();
             form.reset();
         }
     });
@@ -31,13 +35,19 @@ document.addEventListener("DOMContentLoaded", function() {
             } else if (action === 'delete') {
                 if (confirm('Are you sure you want to delete tenant ID ' + tenantId + '?')) {
                     await deleteTenant(tenantId);
-                    document.querySelector(`tr[data-tenant-id="${tenantId}"]`).remove();
+                    tenants = tenants.filter(t => t.tenantId !== tenantId);
+                    renderTenants();
                 }
             }
 
             // Reset the select to "Select action" after processing
             select.selectedIndex = 0;
         }
+    });
+
+    // 改善された検索機能
+    searchInput.addEventListener("input", function() {
+        renderTenants();
     });
 
     async function createTenant(tenantId, tenantName) {
@@ -50,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (!response.ok) throw new Error('Network response was not ok');
         } catch (error) {
             console.error('Error:', error);
+            alert('Failed to create tenant. Please try again.');
         }
     }
 
@@ -63,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (!response.ok) throw new Error('Network response was not ok');
         } catch (error) {
             console.error('Error:', error);
+            alert('Failed to update tenant. Please try again.');
         }
     }
 
@@ -74,6 +86,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (!response.ok) throw new Error('Network response was not ok');
         } catch (error) {
             console.error('Error:', error);
+            alert('Failed to delete tenant. Please try again.');
         }
     }
 
@@ -91,24 +104,55 @@ document.addEventListener("DOMContentLoaded", function() {
                 </select>
             </td>
         `;
-        tenantList.appendChild(row);
+        return row;
     }
 
     function updateTenantInList(tenantId, tenantName) {
-        const row = document.querySelector(`tr[data-tenant-id="${tenantId}"]`);
-        if (row) {
-            row.querySelector('td:nth-child(2)').textContent = tenantName;
+        const index = tenants.findIndex(t => t.tenantId === tenantId);
+        if (index !== -1) {
+            tenants[index].tenantName = tenantName;
+            renderTenants();
         }
     }
 
     async function loadTenants() {
         try {
             const response = await fetch('/api/get-tenants');
-            const tenants = await response.json();
-            tenants.forEach(tenant => addTenantToList(tenant.tenantId, tenant.tenantName));
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            tenants = await response.json();
+            renderTenants();
         } catch (error) {
             console.error('Error loading tenants:', error);
+            tenantList.innerHTML = `<tr><td colspan="3" class="px-6 py-4 text-center text-red-500">Failed to load tenants: ${error.message}</td></tr>`;
         }
     }
+
+    // 新しい関数: テナントの並べ替えとレンダリング
+    function renderTenants() {
+        const searchTerm = searchInput.value.toLowerCase();
+        
+        // テナントを検索語に基づいて並べ替え
+        const sortedTenants = tenants.sort((a, b) => {
+            const aMatch = (a.tenantId.toLowerCase().includes(searchTerm) || a.tenantName.toLowerCase().includes(searchTerm)) ? 1 : 0;
+            const bMatch = (b.tenantId.toLowerCase().includes(searchTerm) || b.tenantName.toLowerCase().includes(searchTerm)) ? 1 : 0;
+            return bMatch - aMatch; // マッチしたものを上に
+        });
+
+        tenantList.innerHTML = ''; // リストをクリア
+
+        sortedTenants.forEach(tenant => {
+            const row = addTenantToList(tenant.tenantId, tenant.tenantName);
+            const isVisible = tenant.tenantId.toLowerCase().includes(searchTerm) || tenant.tenantName.toLowerCase().includes(searchTerm);
+            row.style.display = isVisible ? '' : 'none';
+            tenantList.appendChild(row);
+        });
+
+        if (tenantList.children.length === 0) {
+            tenantList.innerHTML = '<tr><td colspan="3" class="px-6 py-4 text-center">No matching tenants found</td></tr>';
+        }
+    }
+
     loadTenants();
 });
