@@ -2,6 +2,12 @@
 
 ![image](https://github.com/user-attachments/assets/7d6cfddd-be88-436a-a41f-46615a95e091)
 
+## Getting Start
+
+### Prerequisites
+
+1. Include your api gateway path in config.js.
+
 ## Tenant Management
 
 You can create tenants, which are You can register a unique tenant ID and any name.
