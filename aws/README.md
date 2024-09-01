@@ -40,22 +40,4 @@ neo4j-password
 
 ### API
 
-#### Dashboard API Response
-
-```
-{
-  "statusCode": 200,
-  "totalswitches": 3
-}
-```
-
-#### Tenant Management API 
-
-```
-{
-  "tenantId": string,
-  "tenantName": string
-}
-```
-
-
+see https://github.com/squirrel-cage-work/netgraph/blob/main/dashboard/README.md
