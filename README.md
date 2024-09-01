@@ -1,4 +1,4 @@
-# Network Configuration Management Project: netgraph
+# Network Configuration Management Project: netgraph (開発中/under development)
 
 The project aims to use a graph database to manage complex network configurations.
 Learn more about dashboards [here](https://github.com/squirrel-cage-work/netgraph/tree/main/dashboard) and about backend [here](https://github.com/squirrel-cage-work/netgraph/tree/main/backend).
@@ -12,6 +12,14 @@ Learn more about dashboards [here](https://github.com/squirrel-cage-work/netgrap
 3. **Interface**: 物理インターフェース
 4. **VLAN**: VLAN
 5. **VRF**: VRF
+
+## Initial Setup
+
+Please preconfigure neo4j with the following commands.
+
+```
+CREATE CONSTRAINT uniqueTenantId FOR (t:Tenant) REQUIRE (t.id) IS UNIQUE;
+```
 
 ## データモデル
 
