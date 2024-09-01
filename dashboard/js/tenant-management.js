@@ -1,10 +1,8 @@
 document.addEventListener("DOMContentLoaded", function() {
     const form = document.getElementById("tenantForm");
     const tenantList = document.getElementById("tenants");
-    const submitActionsButton = document.getElementById("submitActionsButton");
     const searchInput = document.getElementById("searchTenant");
-
-    let tenants = []; // テナントデータを保持する配列
+    let currentPopup = null;
 
     form.addEventListener("submit", async function(event) {
         event.preventDefault();
@@ -13,42 +11,101 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (tenantId && tenantName) {
             await createTenant(tenantId, tenantName);
-            tenants.push({ tenantId, tenantName });
-            renderTenants();
+            addTenantToList(tenantId, tenantName);
             form.reset();
         }
     });
 
-    submitActionsButton.addEventListener("click", async function() {
-        const selects = document.querySelectorAll('select.form-select');
-        for (const select of selects) {
+    tenantList.addEventListener("change", async function(event) {
+        if (event.target.classList.contains('form-select')) {
+            const select = event.target;
             const action = select.value;
             const tenantId = select.dataset.tenantId;
             const tenantName = select.dataset.tenantName;
 
-            if (action === 'update') {
-                const newName = prompt('Enter new name for tenant ID ' + tenantId, tenantName);
-                if (newName) {
-                    await updateTenant(tenantId, newName);
-                    updateTenantInList(tenantId, newName);
-                }
-            } else if (action === 'delete') {
-                if (confirm('Are you sure you want to delete tenant ID ' + tenantId + '?')) {
-                    await deleteTenant(tenantId);
-                    tenants = tenants.filter(t => t.tenantId !== tenantId);
-                    renderTenants();
-                }
+            if (currentPopup) {
+                currentPopup.remove();
+                currentPopup = null;
             }
 
-            // Reset the select to "Select action" after processing
+            if (action === 'update') {
+                showUpdatePopup(tenantId, tenantName);
+            } else if (action === 'delete') {
+                showDeletePopup(tenantId);
+            }
+
             select.selectedIndex = 0;
         }
     });
 
-    // 改善された検索機能
     searchInput.addEventListener("input", function() {
-        renderTenants();
+        const searchTerm = this.value.toLowerCase();
+        const rows = tenantList.querySelectorAll('tr');
+    
+        rows.forEach(row => {
+            const tenantIdCell = row.querySelector('td:first-child');
+            const tenantNameCell = row.querySelector('td:nth-child(2)');
+            
+            if (tenantIdCell && tenantNameCell) {
+                const tenantId = tenantIdCell.textContent.toLowerCase();
+                const tenantName = tenantNameCell.textContent.toLowerCase();
+                const isVisible = tenantId.includes(searchTerm) || tenantName.includes(searchTerm);
+                row.style.display = isVisible ? '' : 'none';
+            }
+        });
     });
+    
+    function showUpdatePopup(tenantId, tenantName) {
+        const popup = document.createElement('div');
+        popup.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center';
+        popup.innerHTML = `
+            <div class="bg-white p-5 rounded-lg shadow-xl">
+                <h2 class="text-xl mb-4">Update Tenant</h2>
+                <p class="mb-2">Tenant ID: ${tenantId}</p>
+                <input type="text" id="newTenantName" value="${tenantName}" class="border p-2 mb-4 w-full">
+                <div class="flex justify-end">
+                    <button id="cancelUpdate" class="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded mr-2">Cancel</button>
+                    <button id="confirmUpdate" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(popup);
+        currentPopup = popup;
+
+        document.getElementById('cancelUpdate').addEventListener('click', () => popup.remove());
+        document.getElementById('confirmUpdate').addEventListener('click', async () => {
+            const newName = document.getElementById('newTenantName').value;
+            if (newName) {
+                await updateTenant(tenantId, newName);
+                updateTenantInList(tenantId, newName);
+                popup.remove();
+            }
+        });
+    }
+
+    function showDeletePopup(tenantId) {
+        const popup = document.createElement('div');
+        popup.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center';
+        popup.innerHTML = `
+            <div class="bg-white p-5 rounded-lg shadow-xl">
+                <h2 class="text-xl mb-4">Delete Tenant</h2>
+                <p class="mb-4">Are you sure you want to delete tenant ID ${tenantId}?</p>
+                <div class="flex justify-end">
+                    <button id="cancelDelete" class="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded mr-2">Cancel</button>
+                    <button id="confirmDelete" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(popup);
+        currentPopup = popup;
+
+        document.getElementById('cancelDelete').addEventListener('click', () => popup.remove());
+        document.getElementById('confirmDelete').addEventListener('click', async () => {
+            await deleteTenant(tenantId);
+            document.querySelector(`tr[data-tenant-id="${tenantId}"]`).remove();
+            popup.remove();
+        });
+    }
 
     async function createTenant(tenantId, tenantName) {
         try {
@@ -104,14 +161,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 </select>
             </td>
         `;
-        return row;
+        tenantList.appendChild(row);
     }
 
     function updateTenantInList(tenantId, tenantName) {
-        const index = tenants.findIndex(t => t.tenantId === tenantId);
-        if (index !== -1) {
-            tenants[index].tenantName = tenantName;
-            renderTenants();
+        const row = document.querySelector(`tr[data-tenant-id="${tenantId}"]`);
+        if (row) {
+            row.querySelector('td:nth-child(2)').textContent = tenantName;
+            row.querySelector('select').dataset.tenantName = tenantName;
         }
     }
 
@@ -121,36 +178,16 @@ document.addEventListener("DOMContentLoaded", function() {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            tenants = await response.json();
-            renderTenants();
+            const tenants = await response.json();
+            if (tenants.length === 0) {
+                tenantList.innerHTML = '<tr><td colspan="3" class="px-6 py-4 text-center">No tenants found</td></tr>';
+            } else {
+                tenantList.innerHTML = ''; // Clear existing rows
+                tenants.forEach(tenant => addTenantToList(tenant.tenantId, tenant.tenantName));
+            }
         } catch (error) {
             console.error('Error loading tenants:', error);
             tenantList.innerHTML = `<tr><td colspan="3" class="px-6 py-4 text-center text-red-500">Failed to load tenants: ${error.message}</td></tr>`;
-        }
-    }
-
-    // 新しい関数: テナントの並べ替えとレンダリング
-    function renderTenants() {
-        const searchTerm = searchInput.value.toLowerCase();
-        
-        // テナントを検索語に基づいて並べ替え
-        const sortedTenants = tenants.sort((a, b) => {
-            const aMatch = (a.tenantId.toLowerCase().includes(searchTerm) || a.tenantName.toLowerCase().includes(searchTerm)) ? 1 : 0;
-            const bMatch = (b.tenantId.toLowerCase().includes(searchTerm) || b.tenantName.toLowerCase().includes(searchTerm)) ? 1 : 0;
-            return bMatch - aMatch; // マッチしたものを上に
-        });
-
-        tenantList.innerHTML = ''; // リストをクリア
-
-        sortedTenants.forEach(tenant => {
-            const row = addTenantToList(tenant.tenantId, tenant.tenantName);
-            const isVisible = tenant.tenantId.toLowerCase().includes(searchTerm) || tenant.tenantName.toLowerCase().includes(searchTerm);
-            row.style.display = isVisible ? '' : 'none';
-            tenantList.appendChild(row);
-        });
-
-        if (tenantList.children.length === 0) {
-            tenantList.innerHTML = '<tr><td colspan="3" class="px-6 py-4 text-center">No matching tenants found</td></tr>';
         }
     }
 
