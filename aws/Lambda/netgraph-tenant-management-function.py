@@ -26,19 +26,36 @@ def lambda_handler(event, context):
     session = driver.session()
     
     body = json.loads(event['body'])
+    tenantId = body['tenantId']
+    tenantName = body['tenantName']
     
     if event['httpMethod'] == 'POST':
-        tenantId = body['tenantId']
-        tenantName = body['tenantName']
         query = '''
         CREATE (t:Tenant {id: $tenantId, name: $tenantName})
         RETURN t
         '''
-        
-        parameters = {
-            'tenantId': tenantId,
-            'tenantName': tenantName
-        }
+    elif event['httpMethod'] == 'PUT':
+        query = '''
+        MATCH (t:Tenant {id: $tenantId})
+        SET t.name = $tenantName
+        RETURN t
+        '''
+    elif event['httpMethod'] == 'DELETE':
+        query = '''
+        MATCH (t:Tenant {tenantId: $tenantId})
+        DELETE t
+        '''
+    elif event['httpMethod'] == 'GET':
+        query = '''
+        MATCH (t:Tenant)
+        RETURN t.id AS TenantID, t.name AS TenantName
+        ORDER BY t.id
+        '''
+
+    parameters = {
+        'tenantId': tenantId,
+        'tenantName': tenantName
+    }
             
     results = session.run(query, parameters)
 
