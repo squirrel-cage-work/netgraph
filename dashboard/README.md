@@ -61,4 +61,12 @@ ORDER BY t.id
 
 ### Switches
 
+The API definitions are as follows.
+
+* Path : /devices/switches/{switchName}
+* Method : GET, POST, PUT, DELETE
+```Body
+{
+}
+```
 
