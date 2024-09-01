@@ -33,7 +33,13 @@ neo4j-password
 }
 ```
 
+#### Tenant Management API 
 
-
+```
+{
+  "tenantId": string,
+  "tenantName": string
+}
+```
 
 
