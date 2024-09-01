@@ -18,34 +18,39 @@ You can create tenants, which are You can register a unique tenant ID and any na
 
 ### Tenant Management API and Graph 
 
-``` API
+The API definitions are as follows.
+
+* Path : /tenants/{tenantId}
+* Method : GET, POST, PUT, DELETE
+```Body
 {
-  "tenantId": string,
   "tenantName": string
 }
 ```
+
+The cypher query at this time is as follows.
 
 ```
 CREATE CONSTRAINT uniqueTenantId FOR (t:Tenant) REQUIRE (t.id) IS UNIQUE;
 ```
 
-``` CREATE
+```CREATE(POST)
 CREATE (t:Tenant {id: '123456789', name: 'hoge'})
 RETURN t
 ```
 
-``` UPDATE
+```UPDATE(PUT)
 MATCH (t:Tenant {id: '123456789'})
 SET t.name = 'huga'
 RETURN t
 ```
 
-``` DELETE
+```DELETE(DELETE)
 MATCH (t:Tenant {tenantId: 'tenant123'})
 DELETE t
 ```
 
-``` GET
+```GET(GET)
 MATCH (t:Tenant)
 RETURN t.id AS TenantID, t.name AS TenantName
 ORDER BY t.id
