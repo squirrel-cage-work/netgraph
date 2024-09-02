@@ -1,0 +1,128 @@
+openapi: '3.0.3'
+info:
+  title: netgraph api
+  description: netgraph api
+  version: 0.0.1
+servers:
+  - url: http://sample.example.com/
+    description: production server
+paths:
+  /switches/{deviceName}:
+    get:
+      responses:
+        '200':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tenantName:
+                    type: string
+        '400':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    post:
+      requestBody:
+        required: false 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tenantName:
+                  type: string
+      responses:
+        '200':
+          description: sample
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    put:
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tenantName:
+                  type: string
+      responses:
+        '200':
+          description: sample
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string          
+    delete:
+      responses:
+        '200':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tenantName:
+                    type: string
+        '400':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
