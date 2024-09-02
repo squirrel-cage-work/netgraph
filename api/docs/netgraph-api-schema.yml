@@ -9,6 +9,12 @@ servers:
 paths:
   /switches/{deviceName}:
     get:
+      parameters:
+        - name: deviceName
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: sample
@@ -29,6 +35,12 @@ paths:
                   message:
                     type: string
     post:
+      parameters:
+        - name: deviceName
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         required: false 
         content:
@@ -68,6 +80,12 @@ paths:
                   message:
                     type: string
     put:
+      parameters:
+        - name: deviceName
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         required: true 
         content:
@@ -107,6 +125,12 @@ paths:
                   message:
                     type: string          
     delete:
+      parameters:
+        - name: deviceName
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: sample
