@@ -19,38 +19,42 @@ document.addEventListener("DOMContentLoaded", function () {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                mode: 'no-cors'
+                }
             });
-        const text = await response.text(); // まずテキストとして取得
-        console.log('Raw response:', text); // デバッグ用にレスポンスをログ出力
     
-        console.log(response.json())
-        data = await response.json();
+        
+        const apiResponse = await response.json();
 
         // データ変換関数
-        function transformData(response) {
-            return response.body.map(item => {
-                return {
+        function transformData(data) {
+            let result = [];
+
+            for (let i = 0; i < data.length; i++) {
+                let item = data[i];
+                let tenantName = '';
+        
+                if (item.properties.tenant) {
+                    tenantName = item.properties.tenant
+                }
+        
+                result.push({
                     name: item.deviceName,
-                    tenantName: item.properties.tenant ? item.properties.tenant.replace(/[\[\]\'\" ]/g, '') : ''
-                };
-            });
+                    tenantName: tenantName
+                });
+            }
+            return result;
         }
-
+        
         // データを変換
-        const switches = transformData(data);
+        const transformedData = transformData(apiResponse);
 
-        // 変換後のデータをコンソールに表示（または他の処理を行う）
-        console.log(switches);
+        switches = transformedData
 
         } catch (error) {
             console.error('Failed to load initial data from API:', error);
             // APIが利用できない場合、サンプルデータを使用
             switches = [
-                { name: "Switch1", tenantName: "Tenant A" },
-                { name: "Switch2", tenantName: "Tenant B" },
-                { name: "Switch3", tenantName: "" }
+                { name: "Error!!", tenantName: "Error!!" }
             ];
         }
         switches.forEach(switchData => addSwitchToList(switchData));
