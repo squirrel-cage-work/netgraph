@@ -23,13 +23,11 @@ paths:
                       type: string
                       description: sample
                     properties:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          tenant:
-                            type: string
-                            description: sample
+                      type: object
+                      properties:
+                        tenant:
+                          type: string
+                          description: sample
   /switches/{deviceName}:
     get:
       parameters:
