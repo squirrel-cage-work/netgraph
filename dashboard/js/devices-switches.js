@@ -6,11 +6,61 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentPopup = null;
     let switches = []; // ローカルでスイッチデータを保持
 
-    // 初期データの読み込み
-    //loadInitialData();
-
     // load devicesSwitchesApiUrl from config.js
-    const apiUrl = config.devicesSwitchesApiUrl;
+    const devicesSwitchesApiUrl = config.devicesSwitchesApiUrl;
+    const devicesApiUrl         = config.devicesApiUrl;
+
+    // 初期データの読み込み
+    loadInitialData();
+
+    async function loadInitialData() {
+        try {
+            const response = await fetch(devicesApiUrl + '/' + 'switches', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+    
+        
+        const apiResponse = await response.json();
+
+        // データ変換関数
+        function transformData(data) {
+            let result = [];
+
+            for (let i = 0; i < data.length; i++) {
+                let item = data[i];
+                let tenantName = '';
+        
+                if (item.properties.tenant) {
+                    tenantName = item.properties.tenant
+                }
+        
+                result.push({
+                    name: item.deviceName,
+                    tenantName: tenantName
+                });
+            }
+            return result;
+        }
+        
+        // データを変換
+        const transformedData = transformData(apiResponse);
+
+        switches = transformedData
+
+        } catch (error) {
+            console.error('Failed to load initial data from API:', error);
+            // APIが利用できない場合、サンプルデータを使用
+            switches = [
+                { name: "Error!!", tenantName: "Error!!" }
+            ];
+        }
+        switches.forEach(switchData => addSwitchToList(switchData));
+        //updateTotalSwitches();
+    }
+
 
     // Add listeners to form submission events 
     form.addEventListener("submit", async function (event) {
@@ -24,14 +74,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function createSwitch(switchName) {
         try {
-            const response = await fetch(apiUrl + '/' + switchName, {
+            const response = await fetch(devicesSwitchesApiUrl + '/' + switchName, {
                 mode: 'no-cors',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 }
             });
-            console.log(apiUrl + '/' + switchName)
+            console.log(devicesSwitchesApiUrl + '/' + switchName)
    
             const newSwitch = { name: switchName, tenantName: "" };
             switches.push(newSwitch);
@@ -81,24 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     */
 
-    /*
-    async function loadInitialData() {
-        try {
-            const response = await fetch('/api/switches');
-            switches = await response.json();
-        } catch (error) {
-            console.error('Failed to load initial data from API:', error);
-            // APIが利用できない場合、サンプルデータを使用
-            switches = [
-                { name: "Switch1", tenantName: "Tenant A" },
-                { name: "Switch2", tenantName: "Tenant B" },
-                { name: "Switch3", tenantName: "" }
-            ];
-        }
-        switches.forEach(switchData => addSwitchToList(switchData));
-        updateTotalSwitches();
-    }
-    */
+
 
 
     function addSwitchToList(switchData) {
