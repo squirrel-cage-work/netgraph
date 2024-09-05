@@ -25,6 +25,24 @@ Create a lambda layer using the zip file created above; upload the zip file with
 }
 ```
 
+#### Basic error handling
+
+Query errors from neo4j are basically defined as follows.
+```
+try:
+    results = session.run(query)
+    for record in results:
+        print(record["*****"])
+except Exception as e:
+    response = json.dumps({
+        "statusCode": 500,
+        "body": str(e),
+    })
+    return response 
+finally:
+    session.close()
+```
+
 ### Systems Manager Parameter Store
 
 Store your neo4j url, username and password in the parameter store. The parameter names should be as follows.
