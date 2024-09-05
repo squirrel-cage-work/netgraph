@@ -110,7 +110,7 @@
                         <h2 class="text-lg font-bold mb-4">Tenant List</h2>
                         <!-- Search Box -->
                         <div class="mb-4">
-                            <input type="text" id="searchSwitch" placeholder="Search switches..." class="w-full px-3 py-2 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring focus:border-blue-300">
+                            <input type="text" id="searchSwitch" onkeyup="searchSwitches()" placeholder="Search switches..." class="w-full px-3 py-2 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring focus:border-blue-300">
                         </div>
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
@@ -124,13 +124,48 @@
                                 <tbody id="switches" class="bg-white divide-y divide-gray-200">
                                     <!-- JavaScriptで動的にテナントリストを挿入 -->
                                 </tbody>
+                                <script>
+                                    function searchSwitches() {
+                                        // 検索フィールドの値を取得
+                                        const input = document.getElementById("searchSwitch").value.toLowerCase();
+                                        const table = document.getElementById("switches");
+                                        const rows = table.getElementsByTagName("tr");
+                            
+                                        // 各行のすべてのセルをチェックして、フィルタリング
+                                        for (let i = 0; i < rows.length; i++) {
+                                            const cells = rows[i].getElementsByTagName("td");
+                                            let rowContainsSearchText = false;
+                            
+                                            // 各セルを調べる
+                                            for (let j = 0; j < cells.length; j++) {
+                                                const cell = cells[j];
+                                                if (cell) {
+                                                    const cellText = cell.textContent || cell.innerText;
+                                                    if (cellText.toLowerCase().indexOf(input) > -1) {
+                                                        rowContainsSearchText = true;
+                                                        break; // 一致するものがあればその行を表示
+                                                    }
+                                                }
+                                            }
+                            
+                                            // 検索結果がある行だけを表示
+                                            if (rowContainsSearchText) {
+                                                rows[i].style.display = "";
+                                            } else {
+                                                rows[i].style.display = "none";
+                                            }
+                                        }
+                                    }
+                                </script>                            
                             </table>
                         </div>
+                        <!--
                         <div class="mt-4">
                             <button id="submitActionsButton" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                 Submit
                             </button>
                         </div>
+                        -->
                     </div>
                 </div>
             </main>
