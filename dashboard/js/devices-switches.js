@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const devicesSwitchesApiUrl = config.devicesSwitchesApiUrl;
     const devicesApiUrl         = config.devicesApiUrl;
 
+    console.log(devicesApiUrl);
+
     // 初期データの読み込み
     loadInitialData();
 
@@ -22,7 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
     
-        
         const apiResponse = await response.json();
 
         // データ変換関数
@@ -51,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
         switches = transformedData
 
         } catch (error) {
+            console.log(response);
             console.error('Failed to load initial data from API:', error);
             // APIが利用できない場合、サンプルデータを使用
             switches = [
@@ -58,7 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
             ];
         }
         switches.forEach(switchData => addSwitchToList(switchData));
-        //updateTotalSwitches();
     }
 
 
@@ -75,7 +76,6 @@ document.addEventListener("DOMContentLoaded", function () {
     async function createSwitch(switchName) {
         try {
             const response = await fetch(devicesSwitchesApiUrl + '/' + switchName, {
-                mode: 'no-cors',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -89,8 +89,9 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (error) {
             console.error('Failed to create switch via API:', error);
         }
-        //updateTotalSwitches();
     }
+
+
 
     switchesBody.addEventListener("change", async function (event) {
         if (event.target.classList.contains('form-select')) {
@@ -104,93 +105,32 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentPopup = null;
             }
 
+            if (action === 'delete'){
+                showDeletePopup(switchName);
+            }
+
+            /*
             if (action === 'update') {
                 showUpdatePopup(switchName, tenantName);
             } else if (action === 'delete') {
                 showDeletePopup(switchName);
             }
+            */
 
             select.selectedIndex = 0;
         }
     });
 
-    /*
-    searchInput.addEventListener("input", function () {
-        const searchTerm = this.value.toLowerCase();
-        const rows = switchesBody.querySelectorAll('tr');
-        rows.forEach(row => {
-            const switchNameCell = row.querySelector('td:first-child');
-            const tenantNameCell = row.querySelector('td:nth-child(2)');
-            if (switchNameCell && tenantNameCell) {
-                const switchName = switchNameCell.textContent.toLowerCase();
-                const tenantName = tenantNameCell.textContent.toLowerCase();
-                const isVisible = switchName.includes(searchTerm) || tenantName.includes(searchTerm);
-                row.style.display = isVisible ? '' : 'none';
-            }
-        });
-    });
-    */
-
-
-
-
-    function addSwitchToList(switchData) {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${switchData.name}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${switchData.tenantName || ''}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-              <select class="form-select" data-switch-name="${switchData.name}" data-tenant-name="${switchData.tenantName || ''}">
-                  <option value="">Select Action</option>
-                  <option value="update">Update</option>
-                  <option value="delete"Delete</option>
-              </select>
-          </td>
-      `;
-        switchesBody.appendChild(row);
-    }
-
-    function updateTotalSwitches() {
-        totalSwitches.textContent = switches.length;
-    }
-
-    function showUpdatePopup(switchName, tenantName) {
-        const popup = document.createElement('div');
-        popup.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center';
-        popup.innerHTML = `
-          <div class="bg-white p-6 rounded-lg">
-              <h2 class="text-xl font-bold mb-4">Update Switch</h2>
-              <p>Switch Name: ${switchName}</p>
-              <input type="text" id="newTenantName" placeholder="New Tenant Name" value="${tenantName || ''}" class="border p-2 mb-4">
-              <button id="updateSwitch" class="bg-blue-500 text-white px-4 py-2 rounded">Update</button>
-              <button id="cancelUpdate" class="bg-gray-300 text-black px-4 py-2 rounded ml-2">Cancel</button>
-          </div>
-      `;
-        document.body.appendChild(popup);
-        currentPopup = popup;
-
-        document.getElementById('updateSwitch').addEventListener('click', async () => {
-            const newTenantName = document.getElementById('newTenantName').value;
-            await updateSwitch(switchName, newTenantName);
-            popup.remove();
-            currentPopup = null;
-        });
-
-        document.getElementById('cancelUpdate').addEventListener('click', () => {
-            popup.remove();
-            currentPopup = null;
-        });
-    }
-
     function showDeletePopup(switchName) {
+
         const popup = document.createElement('div');
         popup.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center';
         popup.innerHTML = `
-          <div class="bg-white p-6 rounded-lg">
-              <h2 class="text-xl font-bold mb-4">Delete Switch</h2>
+          <div class="bg-white p-5 rounded-lg shadow-xl">
+              <h2 class="text-xl mb-4">Delete Switch</h2>
               <p>Are you sure you want to delete switch ${switchName}?</p>
-              <button id="confirmDelete" class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
-              <button id="cancelDelete" class="bg-gray-300 text-black px-4 py-2 rounded ml-2">Cancel</button>
+              <button id="cancelDelete" class="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded mr-2">Cancel</button>
+              <button id="confirmDelete" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
           </div>
       `;
         document.body.appendChild(popup);
@@ -208,59 +148,71 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    async function updateSwitch(switchName, newTenantName) {
-        try {
-            const response = await fetch(`/api/switches/${switchName}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ tenantName: newTenantName }),
-            });
-            const updatedSwitch = await response.json();
-            updateSwitchInList(updatedSwitch);
-        } catch (error) {
-            console.error('Failed to update switch via API:', error);
-            // APIが利用できない場合、ローカルで処理
-            const switchToUpdate = switches.find(s => s.name === switchName);
-            if (switchToUpdate) {
-                switchToUpdate.tenantName = newTenantName;
-                updateSwitchInList(switchToUpdate);
-            }
-        }
-    }
-
     async function deleteSwitch(switchName) {
         try {
-            await fetch(`/api/switches/${switchName}`, {
+            await fetch(devicesSwitchesApiUrl + '/' + switchName, {
                 method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
-            removeSwitchFromList(switchName);
+        console.log(devicesSwitchesApiUrl + '/' + switchName)
         } catch (error) {
             console.error('Failed to delete switch via API:', error);
-            // APIが利用できない場合、ローカルで処理
-            removeSwitchFromList(switchName);
+            alert('Failed to delete switch via API:');
         }
+        clearSwitchTable();
+        loadInitialData();
     }
 
-    function updateSwitchInList(updatedSwitch) {
-        const row = switchesBody.querySelector(`tr:has(select[data-switch-name="${updatedSwitch.name}"])`);
-        if (row) {
-            row.querySelector('td:nth-child(2)').textContent = updatedSwitch.tenantName || '';
-            row.querySelector('select').dataset.tenantName = updatedSwitch.tenantName || '';
-        }
-        const index = switches.findIndex(s => s.name === updatedSwitch.name);
-        if (index !== -1) {
-            switches[index] = updatedSwitch;
-        }
+    function clearSwitchTable() {
+        const switchesBody = document.getElementById('switches'); // tbodyのIDに合わせて修正
+        switchesBody.innerHTML = ''; // テーブルの内容をクリア
     }
-
-    function removeSwitchFromList(switchName) {
-        const row = switchesBody.querySelector(`tr:has(select[data-switch-name="${switchName}"])`);
-        if (row) {
-            row.remove();
+    
+    function addSwitchToList(switchData) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${switchData.name}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${switchData.tenantName || ''}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <select class="form-select text-gray-600" data-switch-name="${switchData.name}" data-tenant-name="${switchData.tenantName || ''}">
+                  <option value="">Select Action</option>
+                  <option value="delete">Delete</option>
+              </select>
+          </td>
+      `;
+        switchesBody.appendChild(row);
+    }
+    function searchSwitches() {
+        // 検索フィールドの値を取得
+        const input = document.getElementById("searchSwitch").value.toLowerCase();
+        const table = document.getElementById("switches");
+        const rows = table.getElementsByTagName("tr");
+    
+        // 各行のすべてのセルをチェックして、フィルタリング
+        for (let i = 0; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName("td");
+            let rowContainsSearchText = false;
+    
+            // 各セルを調べる
+            for (let j = 0; j < cells.length; j++) {
+                const cell = cells[j];
+                if (cell) {
+                    const cellText = cell.textContent || cell.innerText;
+                    if (cellText.toLowerCase().indexOf(input) > -1) {
+                        rowContainsSearchText = true;
+                        break; // 一致するものがあればその行を表示
+                    }
+                }
+            }
+    
+            // 検索結果がある行だけを表示
+            if (rowContainsSearchText) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
         }
-        switches = switches.filter(s => s.name !== switchName);
-        updateTotalSwitches();
     }
 });
