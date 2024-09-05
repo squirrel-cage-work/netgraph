@@ -1,4 +1,4 @@
-# Network Configuration Management Project: netgraph (開発中/under development)
+# Network Topology Management Project: netgraph (開発中/under development)
 
 The project aims to use a graph database to manage complex network configurations.
 Learn more about dashboards [here](https://github.com/squirrel-cage-work/netgraph/tree/main/dashboard) and about backend [here](https://github.com/squirrel-cage-work/netgraph/tree/main/backend).
