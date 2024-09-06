@@ -52,10 +52,11 @@ document.addEventListener("DOMContentLoaded", function () {
         switches = transformedData
 
         } catch (error) {
-            console.log(response);
+            //console.log(response);
             console.error('Failed to load initial data from API:', error);
             // APIが利用できない場合、サンプルデータを使用
             switches = [
+                { name: "Error!!", tenantName: "Error!!" },
                 { name: "Error!!", tenantName: "Error!!" }
             ];
         }
@@ -169,7 +170,26 @@ document.addEventListener("DOMContentLoaded", function () {
         const switchesBody = document.getElementById('switches'); // tbodyのIDに合わせて修正
         switchesBody.innerHTML = ''; // テーブルの内容をクリア
     }
-    
+
+    function addSwitchToList(switchData) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${switchData.name}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+           <a href="create-interface.html?device=${encodeURIComponent(switchData.name)}" class="text-blue-500 hover:text-blue-700" target="_blank">link</a>
+        　</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${switchData.tenantName || ''}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <select class="form-select text-gray-600" data-switch-name="${switchData.name}" data-tenant-name="${switchData.tenantName || ''}">
+                  <option value="">Select Action</option>
+                  <option value="delete">Delete</option>
+              </select>
+          </td>
+        `;
+        switchesBody.appendChild(row);
+    }
+
+    /*
     function addSwitchToList(switchData) {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -184,35 +204,5 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
         switchesBody.appendChild(row);
     }
-    function searchSwitches() {
-        // 検索フィールドの値を取得
-        const input = document.getElementById("searchSwitch").value.toLowerCase();
-        const table = document.getElementById("switches");
-        const rows = table.getElementsByTagName("tr");
-    
-        // 各行のすべてのセルをチェックして、フィルタリング
-        for (let i = 0; i < rows.length; i++) {
-            const cells = rows[i].getElementsByTagName("td");
-            let rowContainsSearchText = false;
-    
-            // 各セルを調べる
-            for (let j = 0; j < cells.length; j++) {
-                const cell = cells[j];
-                if (cell) {
-                    const cellText = cell.textContent || cell.innerText;
-                    if (cellText.toLowerCase().indexOf(input) > -1) {
-                        rowContainsSearchText = true;
-                        break; // 一致するものがあればその行を表示
-                    }
-                }
-            }
-    
-            // 検索結果がある行だけを表示
-            if (rowContainsSearchText) {
-                rows[i].style.display = "";
-            } else {
-                rows[i].style.display = "none";
-            }
-        }
-    }
+    */
 });
