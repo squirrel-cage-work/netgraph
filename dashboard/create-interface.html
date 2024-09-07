@@ -8,6 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <script src="js/config.js" defer></script>
     <script src="js/menu.js" defer></script>
+    <script src="js/create-interface.js" defer></script>
     <style>
         /* スクロールと高さ制限 */
         .table-wrapper {
@@ -39,13 +40,14 @@
         <div id="menu-container" class="w-64 flex-shrink-0"></div>
 
         <div class="container mx-auto p-4">
-            <h1 class="text-2xl font-bold mb-4">Create Interfaces for Device</h1>
-            <form id="interfaceForm">
-                <div class="mb-4">
-                    <label for="deviceName" class="block text-sm font-medium text-gray-700">Device Name</label>
-                    <input type="text" id="deviceName" class="w-full px-3 py-2 placeholder-gray-400 text-gray-700 bg-white rounded border border-gray-300 text-sm shadow focus:outline-none focus:ring focus:border-blue-300" readonly>
-                </div>
-
+            <div id="h1-container">
+                <!-- insert h1 tag from javascript -->
+            </div>
+            <div class="mb-4">
+                <label for="deviceName" class="block text-sm font-medium text-gray-700">Device Name</label>
+                <input type="text" id="deviceNameInput" class="w-full px-3 py-2 placeholder-gray-400 text-gray-700 bg-white rounded border border-gray-300 text-sm shadow focus:outline-none focus:ring focus:border-blue-300" readonly>
+            </div>
+            <form id="createInterfaceForm">
                 <div class="overflow-x-auto table-wrapper">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
@@ -61,48 +63,20 @@
                         </tbody>
                     </table>
                 </div>
-
                 <button type="button" id="addInterface" class="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">+ Add Interface</button>
                 <button type="submit" class="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Create Interfaces</button>
             </form>
         </div>
     </div>
 
+    <!--
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const deviceNameInput = document.getElementById('deviceName');
             const urlParams = new URLSearchParams(window.location.search);
             const deviceName = urlParams.get('device');
             deviceNameInput.value = deviceName;
-    
-            const interfacesContainer = document.getElementById('interfacesContainer');
-            let interfaceIndex = 0;
-    
-            function createInterfaceInput() {
-                interfaceIndex++;
-                const row = document.createElement('tr');
-                row.className = 'bg-gray-50';
-                row.innerHTML = `
-                    <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
-                        <input type="text" id="interfaceType${interfaceIndex}" name="interfaceType${interfaceIndex}" class="w-full px-2 py-1 placeholder-gray-400 text-gray-700 bg-white rounded border border-gray-300 text-sm shadow focus:outline-none focus:ring focus:border-blue-300" required>
-                    </td>
-                    <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
-                        <input type="text" id="interfaceNumber${interfaceIndex}" name="interfaceNumber${interfaceIndex}" class="w-full px-2 py-1 placeholder-gray-400 text-gray-700 bg-white rounded border border-gray-300 text-sm shadow focus:outline-none focus:ring focus:border-blue-300" required>
-                    </td>
-                    <td class="px-6 py-2 whitespace-nowrap text-center">
-                        <input type="checkbox" id="tag${interfaceIndex}" name="tag${interfaceIndex}" class="mt-1">
-                    </td>
-                    <td class="px-6 py-2 text-right">
-                        <button type="button" class="text-red-500 hover:text-red-700 delete-button" onclick="removeInterface(this)">Delete</button>
-                    </td>
-                `;
-                interfacesContainer.appendChild(row);
-            }
-    
-            document.getElementById('addInterface').addEventListener('click', function () {
-                createInterfaceInput();
-            });
-    
+
             document.getElementById('interfaceForm').addEventListener('submit', async function (event) {
                 event.preventDefault();
     
@@ -140,14 +114,10 @@
                 }
             }
     
-            window.removeInterface = function(button) {
-                button.closest('tr').remove();
-            }
-    
             // 初期に1つのインターフェース入力エリアを表示
             createInterfaceInput();
         });
     </script>
-    
+    -->
 </body>
 </html>
