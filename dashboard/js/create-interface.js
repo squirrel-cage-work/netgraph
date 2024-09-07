@@ -50,19 +50,37 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('createInterfaceForm').addEventListener('submit', async function (event) {
         event.preventDefault();
     
-        const formData = new FormData(event.target);
+        const formData  = new FormData(event.target);
+        let requestBody = [];
 
         for (let i = 1; i <= interfaceIndex; i++){
-            const interfaceType   = formData.get(`interfaceType${i}`);
-            const interfaceNumber = formData.get(`interfaceNumber${i}`);
-            const tagId           = formData.get(`tag${i}`);
+            let interfaceType   = formData.get(`interfaceType${i}`);
+            let interfaceNumber = formData.get(`interfaceNumber${i}`);
+            let tagCheckbox     = document.querySelector(`#tag${i}`);
 
-            console.log(interfaceType)
-            console.log(interfaceNumber)
-            console.log(tagId)
-
-
+            let jsonBody        = {};
+            
+            if (tagCheckbox.checked){
+                jsonBody = {
+                    "properties":{
+                        "interfaceType": interfaceType,
+                        "interfaceNumber": interfaceNumber,
+                        "tags": true
+                    }
+                }    
+            } else {
+                jsonBody = {
+                    "properties":{
+                        "interfaceType": interfaceType,
+                        "interfaceNumber": interfaceNumber,
+                        "tags": false
+                    }
+                }                    
+            }
+            requestBody.push(jsonBody);
         }
+
+        console.log(requestBody);
 
     });
 });
