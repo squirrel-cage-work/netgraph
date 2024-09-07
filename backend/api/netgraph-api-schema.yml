@@ -249,6 +249,11 @@ paths:
                         tags:
                           type: boolean
                           description: sample
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:<accountId>:function:netgraph-switches-deviceName-interfaces-function/invocations
+        credentials: arn:aws:iam::<accountId>:role/APIGatewayLambdaExecutionRole
     post:
       parameters:
         - name: deviceName
@@ -297,6 +302,11 @@ paths:
                 properties:
                   message:
                     type: string
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:<accountId>:function:netgraph-switches-deviceName-interfaces-function/invocations
+        credentials: arn:aws:iam::<accountId>:role/APIGatewayLambdaExecutionRole
     options:
       summary: CORS support
       description: |
