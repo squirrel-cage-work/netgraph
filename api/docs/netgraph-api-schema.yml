@@ -237,9 +237,6 @@ paths:
                 items:
                   type: object
                   properties:
-                    deviceName:
-                      type: string
-                      description: sample
                     properties:
                       type: object
                       properties:
@@ -269,9 +266,6 @@ paths:
               items:
                 type: object
                 properties:
-                  deviceName:
-                    type: string
-                    description: sample
                   properties:
                     type: object
                     properties:
