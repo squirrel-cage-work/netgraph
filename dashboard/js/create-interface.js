@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     
+    const switchesDeviceNameInterfacesApiUrl = config.switchesDeviceNameInterfacesApiUrl;
+
     // fetch query parameter
     const queryString = window.location.search;
     const params      = new URLSearchParams(queryString);
@@ -47,6 +49,12 @@ document.addEventListener("DOMContentLoaded", function () {
         interfacesContainer.appendChild(row);
     }
 
+    function clearInterfaceInput() {
+        let addInterface = document.getElementById('interfacesContainer');
+        addInterface.innerHTML = ``
+    };
+
+    // create json body
     document.getElementById('createInterfaceForm').addEventListener('submit', async function (event) {
         event.preventDefault();
     
@@ -54,33 +62,57 @@ document.addEventListener("DOMContentLoaded", function () {
         let requestBody = [];
 
         for (let i = 1; i <= interfaceIndex; i++){
+
             let interfaceType   = formData.get(`interfaceType${i}`);
             let interfaceNumber = formData.get(`interfaceNumber${i}`);
             let tagCheckbox     = document.querySelector(`#tag${i}`);
 
             let jsonBody        = {};
-            
-            if (tagCheckbox.checked){
-                jsonBody = {
-                    "properties":{
-                        "interfaceType": interfaceType,
-                        "interfaceNumber": interfaceNumber,
-                        "tags": true
-                    }
-                }    
-            } else {
-                jsonBody = {
-                    "properties":{
-                        "interfaceType": interfaceType,
-                        "interfaceNumber": interfaceNumber,
-                        "tags": false
-                    }
-                }                    
+
+            try {
+                if (tagCheckbox.checked){
+                    jsonBody = {
+                        "properties":{
+                            "interfaceType": interfaceType,
+                            "interfaceNumber": interfaceNumber,
+                            "tags": true
+                        }
+                    }    
+                } else {
+                    jsonBody = {
+                        "properties":{
+                            "interfaceType": interfaceType,
+                            "interfaceNumber": interfaceNumber,
+                            "tags": false
+                        }
+                    }                       
+                }
+                requestBody.push(jsonBody);
+                
+            } catch(e) {
+                alert(e);
             }
-            requestBody.push(jsonBody);
         }
 
         console.log(requestBody);
+        createInterfaces(deviceName, requestBody);
+        clearInterfaceInput();
+
+    async function createInterfaces (deviceName, requestBody) {
+        try {
+            await fetch(switchesDeviceNameInterfacesApiUrl + '/' + deviceName + '/interfaces', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)});
+        } catch (e) {
+            alert(e);
+        }
+        alert('Success to post switch via API');
+    }
+
+
 
     });
 });
