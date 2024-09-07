@@ -4,7 +4,7 @@ const config = {
     // /{devices} API
     devicesApiUrl: '',
     // /switches/{deviceName} API
-    devicesSwitchesApiUrl: ''
+    devicesSwitchesApiUrl: '',
     // /switches/{deviceName}/interfaces API
-    switchesDeviceNameInterfacesApiUrl: ''
+    switchesDeviceNameInterfacesApiUrl: '',
 };
