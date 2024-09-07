@@ -70,32 +70,7 @@
     </div>
 
     <!--
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const deviceNameInput = document.getElementById('deviceName');
-            const urlParams = new URLSearchParams(window.location.search);
-            const deviceName = urlParams.get('device');
-            deviceNameInput.value = deviceName;
 
-            document.getElementById('interfaceForm').addEventListener('submit', async function (event) {
-                event.preventDefault();
-    
-                const formData = new FormData(event.target);
-                const interfaces = [];
-                
-                for (let i = 1; i <= interfaceIndex; i++) {
-                    const type = formData.get(`interfaceType${i}`);
-                    const number = formData.get(`interfaceNumber${i}`);
-                    const tag = formData.get(`tag${i}`) ? true : false;
-                    if (type && number) {
-                        interfaces.push({ type, number, tag });
-                    }
-                }
-    
-                if (interfaces.length > 0) {
-                    await createInterfaces(deviceName, interfaces);
-                }
-            });
     
             async function createInterfaces(deviceName, interfaces) {
                 try {
