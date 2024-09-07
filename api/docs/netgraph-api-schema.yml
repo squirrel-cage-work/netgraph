@@ -78,7 +78,7 @@ paths:
                 properties:
                   tenantName:
                     type: string
-        '400':
+        '500':
           description: sample
           content:
             application/json:
@@ -113,7 +113,7 @@ paths:
                 properties:
                   message:
                     type: string
-        '400':
+        '500':
           description: sample
           content:
             application/json:
@@ -158,7 +158,7 @@ paths:
                 properties:
                   message:
                     type: string
-        '400':
+        '500':
           description: sample
           content:
             application/json:
@@ -184,7 +184,111 @@ paths:
                 properties:
                   tenantName:
                     type: string
-        '400':
+        '500':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    options:
+      summary: CORS support
+      description: |
+        Enable CORS by returning correct headers
+      tags:
+      - CORS
+      responses:
+        '200':
+          description: Default response for CORS method
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content: {}
+      x-amazon-apigateway-integration:
+        type: mock
+        requestTemplates:
+          application/json: '{\"statusCode\": 200}'
+        passthroughBehavior: "never"
+        responses:
+          default:
+            statusCode: '200'
+            responseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+              method.response.header.Access-Control-Allow-Methods: "'GET,POST,PUT,DELETE, OPTIONS'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /switches/{deviceName}/interfaces:
+    get:
+      responses:
+        '200':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    deviceName:
+                      type: string
+                      description: sample
+                    properties:
+                      type: object
+                      properties:
+                        interfaceType:
+                          type: string
+                          description: sample
+                        interfaceNumber:
+                          type: string
+                          description: sample
+    post:
+      parameters:
+        - name: deviceName
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true 
+        description: sample
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  deviceName:
+                    type: string
+                    description: sample
+                  properties:
+                    type: object
+                    properties:
+                      interfaceType:
+                        type: string
+                        description: sample
+                      interfaceNumber:
+                        type: string
+                        description: sample
+      responses:
+        '200':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
           description: sample
           content:
             application/json:
