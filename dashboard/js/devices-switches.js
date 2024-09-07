@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
         row.innerHTML = `
           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${switchData.name}</td>
           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-           <a href="create-interface.html?device=${encodeURIComponent(switchData.name)}" class="text-blue-500 hover:text-blue-700" target="_blank">link</a>
+           <a href="create-interface.html?deviceName=${encodeURIComponent(switchData.name)}" class="text-blue-500 hover:text-blue-700" target="_blank">link</a>
         　</td>
           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${switchData.tenantName || ''}</td>
           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
