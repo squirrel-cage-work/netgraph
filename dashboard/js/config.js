@@ -1,8 +1,10 @@
 const config = {
     // APIのURLを設定ファイルとして定義
     apiUrl: '',
-    // Devices API URL
+    // /{devices} API
     devicesApiUrl: '',
-    // Devices --> Switches API URL
+    // /switches/{deviceName} API
     devicesSwitchesApiUrl: ''
+    // /switches/{deviceName}/interfaces API
+    switchesDeviceNameInterfacesApiUrl: ''
 };
