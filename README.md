@@ -21,58 +21,9 @@ Please preconfigure neo4j with the following commands.
 CREATE CONSTRAINT uniqueTenantId FOR (t:Tenant) REQUIRE (t.id) IS UNIQUE;
 ```
 
-## データモデル
+## GraphDB Model
 
-### ノード
-
-1. **Switch**
-   - 属性: name, Tenant
-   - 例: `(s000001:Switch {name: 'Switch000001', Tenant: '[UserA, UserB, UserC]'})`
-     
-2. **Interface**
-   - 属性: name, Tenant, tag
-   - 例: `(i000001:Interface {name: '0/1', Tenant: '[UserA, UserB]', Tag: 'True'})`
-
-3. **VLAN**
-    - 属性: name, Tenant
-    - 例: `(v000001:VLAN {name: '10', Tenant: '[UserA]'})`
-  
-4. **VRF**
-   - 属性: name, Tenant
-   - 例: `CREATE (vr000001:VRF {name: '10', Tenant: '[UserA]'})`
-
-### リレーションシップ
-
-1. **HAS_INTERFACE**
-   - スイッチとインターフェースの関係
-   - 属性: Type, Tenant
-   - 例: `(s000001)-[:HAS_INTERFACE { Type: "GigabitEthernet", Tenant: '[UserA, UserB]' }]->(i000001)`
-   - ルータとインターフェースの関係
-   - 属性: Type, Tenant
-   - 例: `(r000001)-[:HAS_INTERFACE { Type: "GigabitEthernet", Tenant: '[UserA, UserB]' }]->(i000001)`
-
-2. **ASSOCIATED_WITH**
-   - スイッチインターフェースとVLANの関係
-   - 属性: Type, Tenant
-   - 例: `(i000001)-[:ASSOCIATED_WITH { Type: "VLAN", Tenant: '[UserA]'}]->(v000001)`
-   - ルータインターフェースとVRFの関係
-   - 属性: Type, Tenant
-   - 例: `(i000001)-[:ASSOCIATED_WITH { Type: "VRF", Tenant: '[UserA]' }]->(vr000001)`
-  
-3. **CONNECTED_TO**
-   - 接続
-   - 属性: Type, Tenant
-   - 例: `(v000001)-[:CONNECTED_TO { Type: "VLAN", Tenant: '[UserA]'}]->(v000004)`
-
-## 特徴
-
-1. **マルチテナント対応**: 各ノードとリレーションシップに`Tenant`属性があるため、複数のユーザーやグループによるリソース共有が可能になります。
-
-2. **柔軟な属性管理**: 必要に応じて各ノードやリレーションシップに属性を追加できます。
-
-3. **階層構造**: Switch, Router, Interface, VLAN の階層関係を表現します。
-
-4. **物理/論理分離**: 物理的な接続（HAS_INTERFACE）と論理的な関連（ASSOCIATED_WITH, CONNECTED_TO）を区別します。
+please see [this link](https://github.com/squirrel-cage-work/netgraph/blob/main/docs/graph_architecture.md).
 
 ### Switch Interface（修正前）
     
