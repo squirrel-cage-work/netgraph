@@ -56,7 +56,6 @@ neo4j-password
 
 Please refer [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/permissions.html#api-gateway-control-access-iam-permissions-model-for-calling-api) to create the execution role.
 The execution role should be named ```APIGatewayLambdaExecutionRole```.
-
 Download netgraph-api-schema.yml and replace <accountId> with your account Id. After deploying the lambda 
 function, build an API Gateway based on OpenAPI.
 
