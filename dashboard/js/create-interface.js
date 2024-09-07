@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Replace h1
     let h1Element = document.getElementById('h1-container');
-    h1Element.innerHTML = `<h1 class="text-2xl font-bold mb-4">Create Interfaces for ${deviceName}</h1>`
+    h1Element.innerHTML = `<h1 class="text-2xl font-bold mb-4">Interfaces for ${deviceName}</h1>`
 
     // Replace deviceNameInput to deviceName
     const deviceNameInput = document.getElementById('deviceNameInput');
