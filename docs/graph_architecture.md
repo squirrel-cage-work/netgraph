@@ -36,6 +36,8 @@
     * peoperties: Type, Tenant
     * exmaple: ``` (v)-[vv:CONNECTED_TO { Type: "VLAN", Tenant: '[UserA]'}]->(v) ```
 
+## example of data query
+
 ## features
 
 1. Multi-tenant support: Tenant attributes on each node and relationship allow resource sharing by multiple users or groups.
