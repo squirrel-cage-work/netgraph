@@ -66,32 +66,6 @@ paths:
               method.response.header.Access-Control-Allow-Methods: "'GET, OPTIONS'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
   /switches/{deviceName}:
-    get:
-      parameters:
-        - name: deviceName
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sample
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  tenantName:
-                    type: string
-        '500':
-          description: sample
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
     post:
       parameters:
         - name: deviceName
@@ -126,52 +100,7 @@ paths:
                 type: object
                 properties:
                   message:
-                    type: string
-    put:
-      parameters:
-        - name: deviceName
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true 
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                tenantName:
-                  type: string
-      responses:
-        '200':
-          description: sample
-          headers:
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-            Access-Control-Allow-Methods:
-              schema:
-                type: string
-            Access-Control-Allow-Headers:
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        '500':
-          description: sample
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string          
+                    type: string       
     delete:
       parameters:
         - name: deviceName
