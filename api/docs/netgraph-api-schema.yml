@@ -249,6 +249,9 @@ paths:
                         interfaceNumber:
                           type: string
                           description: sample
+                        tags:
+                          type: boolean
+                          description: sample
     post:
       parameters:
         - name: deviceName
@@ -277,6 +280,9 @@ paths:
                         description: sample
                       interfaceNumber:
                         type: string
+                        description: sample
+                      tags:
+                        type: boolean
                         description: sample
       responses:
         '200':
