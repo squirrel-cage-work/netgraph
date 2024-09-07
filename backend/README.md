@@ -54,9 +54,49 @@ neo4j-password
 ```
 ### API Gateway
 
+Please refer [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/permissions.html#api-gateway-control-access-iam-permissions-model-for-calling-api) to create the execution role.
+The execution role should be named ```APIGatewayLambdaExecutionRole```.
 
+Download netgraph-api-schema.yml and replace <accountId> with your account Id. After deploying the lambda 
+function, build an API Gateway based on OpenAPI.
 
-### API
+```
+aws apigateway import-rest-api \
+    --parameters endpointConfigurationTypes=REGIONAL \
+    --fail-on-warnings \
+    --cli-binary-format raw-in-base64-out \
+    --body 'file://netgraph-api-schema.yml'
+```
 
-see https://github.com/squirrel-cage-work/netgraph/blob/main/dashboard/README.md
+If you want to use the resource policy, please refer to the following.
 
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "execute-api:Invoke",
+      "Resource": "arn:aws:execute-api:<region code>:<account id>:<api id>/*/*/*",
+      "Condition": {
+        "NotIpAddress": {
+          "aws:SourceIp": "<source ip>/32"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "execute-api:Invoke",
+      "Resource": "arn:aws:execute-api:<region code>:<account id>:<api id>/*/*/*"
+    }
+  ]
+}
+```
+
+To delete an API, see below.
+
+```
+aws apigateway delete-rest-api --rest-api-id <API ID>
+```
