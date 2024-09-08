@@ -7,10 +7,77 @@ document.addEventListener("DOMContentLoaded", function () {
     const params      = new URLSearchParams(queryString);
 
     const deviceName  = params.get('deviceName');
+    const interfacesListHtml  = document.getElementById('interfacesListHtml');
 
     // Replace h1
     let h1Element = document.getElementById('h1-container');
     h1Element.innerHTML = `<h1 class="text-2xl font-bold mb-4">Interfaces for ${deviceName}</h1>`
+
+    loadInitialData();
+
+    // Interface リストの取得
+    async function loadInitialData () {
+
+        let interfacesList = '';
+
+        function transformData(data) {
+            let result = [];
+            for (let i = 0; i < data.length; i++){
+                let item = data[i];
+                let tenantName = '';
+
+                if (item.properties.tenant){
+                    tenantName = item.properties.tenant
+                }
+
+                result.push ({
+                    interfaceType: item.properties.interfaceType,
+                    interfaceNumber: item.properties.interfaceNumber,
+                    tenantName: tenantName
+                });
+            }
+            return result;
+        }
+
+        try {
+            const response = await fetch(switchesDeviceNameInterfacesApiUrl + '/' + deviceName + '/interfaces', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const apiResponse  = await response.json();
+            interfacesListBody = transformData(apiResponse);
+
+        } catch (e) {
+            alert('Failed to load initial data from API', e);
+            interfacesListBody = [
+                { interfaceType: 'Error!!', interfaceNumber: 'Error!!', tenantName: 'Error!!'},
+                { interfaceType: 'Error!!', interfaceNumber: 'Error!!', tenantName: 'Error!!'}
+            ];
+        }
+        interfacesListBody.forEach(interfaceData => interfaceList(interfaceData));
+    }
+
+    function interfaceList(interfaceData) {
+        const table = document.createElement('tr');
+        table.innerHTML = `
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${deviceName}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${interfaceData.interfaceType}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${interfaceData.interfaceNumber}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${interfaceData.tenantName || ''}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <select class="form-select text-gray-600">
+                  <option value="">Select Action</option>
+                  <option value="delete">Delete</option>
+              </select>
+          </td>
+        `;
+        interfacesListHtml.appendChild(table);
+    }
+
+
 
     // Replace deviceNameInput to deviceName
     const deviceNameInput = document.getElementById('deviceNameInput');
@@ -97,22 +164,45 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log(requestBody);
         createInterfaces(deviceName, requestBody);
         clearInterfaceInput();
+    });
 
     async function createInterfaces (deviceName, requestBody) {
         try {
-            await fetch(switchesDeviceNameInterfacesApiUrl + '/' + deviceName + '/interfaces', {
+            const response = await fetch(switchesDeviceNameInterfacesApiUrl + '/' + deviceName + '/interfaces', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(requestBody)});
+                body: JSON.stringify(requestBody)
+            });
+
+            if (response.ok) {
+                alert('Success to post switch via API.');
+                return await response.json();
+            } else {
+                alert('Fail to post switch via API')
+            }
+
         } catch (e) {
             alert(e);
         }
-        alert('Success to post switch via API');
     }
 
+    console.log(interfacesListHtml);
+    
+    // Interface List のプルダウンとして delete を選択されたら発火
+    interfacesListHtml.addEventListener('change', async function (event){
+        console.log(event);
+        if (event.target.classList.contains('form-select')){
+            const select = event.target;
+            const action = select.value;
+            const interfaceNumber = select.dataset.interfaceNumber;
+            console.log(event);
+            if (action == 'delete') {
+                alert('ほげ');
+            }
 
-
+        }
     });
+
 });
