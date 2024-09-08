@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${interfaceData.interfaceNumber}</td>
           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${interfaceData.tenantName || ''}</td>
           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-              <select class="form-select text-gray-600">
+              <select class="form-select text-gray-600" data-interface-number="${interfaceData.interfaceNumber}">
                   <option value="">Select Action</option>
                   <option value="delete">Delete</option>
               </select>
@@ -196,13 +196,46 @@ document.addEventListener("DOMContentLoaded", function () {
         if (event.target.classList.contains('form-select')){
             const select = event.target;
             const action = select.value;
+            console.log(select.dataset);
             const interfaceNumber = select.dataset.interfaceNumber;
-            console.log(event);
+            console.log(interfaceNumber);
+            //console.log(event);
             if (action == 'delete') {
                 alert('ほげ');
+                showDeletePopup(interfaceNumber);
             }
 
         }
     });
+
+    // プルダウンとして delete を選択したら popup を表示
+    function showDeletePopup(interfaceNumber) {
+        const popup = document.createElement('div');
+        //const popup = document.getElementById('popupContainer')
+        popup.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center';
+        popup.innerHTML = `
+          <div class="bg-white p-5 rounded-lg shadow-xl">
+              <h2 class="text-xl mb-4">Delete Switch</h2>
+              <p>Are you sure you want to delete ${interfaceNumber} of ${deviceName}?</p>
+              <button id="cancelDelete" class="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded mr-2">Cancel</button>
+              <button id="confirmDelete" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
+          </div>
+      `;
+
+        popup.style.zIndex = '9999';  // Ensure it's a high value
+
+        document.body.appendChild(popup);
+        currentPopup = popup;
+
+        document.getElementById('confirmDelete').addEventListener('click', async () => {
+            //await deleteSwitch(interfaceNumber);
+            popup.remove();
+            currentPopup = null;
+        });
+        document.getElementById('cancelDelete').addEventListener('click', () => {
+            popup.remove();
+            currentPopup = null;
+        });
+    }
 
 });
