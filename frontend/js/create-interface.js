@@ -269,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function () {
         paginatedItems.forEach(item => {
           const row = `
           <tr>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.deviceName}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${deviceName}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.interfaceType}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.interfaceNumber}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.tenantName || ''}</td>
