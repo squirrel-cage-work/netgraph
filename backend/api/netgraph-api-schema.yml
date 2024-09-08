@@ -241,6 +241,59 @@ paths:
         httpMethod: POST
         uri: arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:<accountId>:function:netgraph-switches-deviceName-interfaces-function/invocations
         credentials: arn:aws:iam::<accountId>:role/APIGatewayLambdaExecutionRole
+    delete:
+      parameters:
+        - name: deviceName
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true 
+        description: sample
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  properties:
+                    type: object
+                    properties:
+                      interfaceType:
+                        type: string
+                        description: sample
+                      interfaceNumber:
+                        type: string
+                        description: sample
+                      tags:
+                        type: boolean
+                        description: sample
+      responses:
+        '200':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:<accountId>:function:netgraph-switches-deviceName-interfaces-function/invocations
+        credentials: arn:aws:iam::<accountId>:role/APIGatewayLambdaExecutionRole
     options:
       summary: CORS support
       description: |
