@@ -53,11 +53,23 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (e) {
             alert('Failed to load initial data from API', e);
             interfacesListBody = [
-                { interfaceType: 'Error!!', interfaceNumber: 'Error!!', tenantName: 'Error!!'},
-                { interfaceType: 'Error!!', interfaceNumber: 'Error!!', tenantName: 'Error!!'}
+                { interfaceType: 'Error1!!', interfaceNumber: 'Error!!', tenantName: 'Error!!'},
+                { interfaceType: 'Error2!!', interfaceNumber: 'Error!!', tenantName: 'Error!!'},
+                { interfaceType: 'Error3!!', interfaceNumber: 'Error!!', tenantName: 'Error!!'},
+                { interfaceType: 'Error4!!', interfaceNumber: 'Error!!', tenantName: 'Error!!'},
+                { interfaceType: 'Error5!!', interfaceNumber: 'Error!!', tenantName: 'Error!!'},
+                { interfaceType: 'Error6!!', interfaceNumber: 'Error!!', tenantName: 'Error!!'},
+                { interfaceType: 'Error7!!', interfaceNumber: 'Error!!', tenantName: 'Error!!'},
+                { interfaceType: 'Error8!!', interfaceNumber: 'Error!!', tenantName: 'Error!!'},
+                { interfaceType: 'Error9!!', interfaceNumber: 'Error!!', tenantName: 'Error!!'},
+                { interfaceType: 'Error10!!', interfaceNumber: 'Error!!', tenantName: 'Error!!'},
+                { interfaceType: 'Error11!!', interfaceNumber: 'Error!!', tenantName: 'Error!!'}
             ];
         }
-        interfacesListBody.forEach(interfaceData => interfaceList(interfaceData));
+        console.log(interfacesListBody)
+        renderTable(currentPage, interfacesListBody);
+        renderPagination(interfacesListBody);
+        //interfacesListBody.forEach(interfaceData => interfaceList(interfaceData));
     }
 
     function interfaceList(interfaceData) {
@@ -241,4 +253,67 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    /*
+    ページネーション
+    */
+    const rowsPerPage = 5; // １ページの表示行数
+    let currentPage = 1;
+
+    function renderTable(page, data) {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const paginatedItems = data.slice(start, end);
+        console.log(data);
+        const tableBody = document.getElementById('interfacesListHtml');
+        tableBody.innerHTML = '';
+        paginatedItems.forEach(item => {
+          const row = `
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.deviceName}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.interfaceType}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.interfaceNumber}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.tenantName || ''}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <select class="form-select text-gray-600" data-interface-number="${item.interfaceNumber}" data-tenant-name="${item.tenantName || ''}" data-interface-type="${item.interfaceType}">
+                    <option value="">Select Action</option>
+                    <option value="delete">Delete</option>
+                </select>
+            </td>
+          </tr>
+          `;
+          tableBody.innerHTML += row;
+          console.log(item.interfaceNumber);
+        });
+    }
+    
+    function renderPagination(data) {
+        const pageCount = Math.ceil(data.length / rowsPerPage);
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = '';
+    
+        const dataString = encodeURIComponent(JSON.stringify(data));
+        const prevButton = `<a href="#" class="text-sm text-gray-500 hover:text-gray-700" onclick="changePage(${currentPage - 1}, '${dataString}')">Previous</a>`;
+        const nextButton = `<a href="#" class="text-sm text-gray-500 hover:text-gray-700" onclick="changePage(${currentPage + 1}, '${dataString}')">Next</a>`;
+    
+        let pageLinks = '';
+        for (let i = 1; i <= pageCount; i++) {
+          const isActive = i === currentPage ? 'text-blue-500 border-blue-500' : 'text-gray-500 border-gray-300';
+          pageLinks += `<a href="#" class="px-3 py-1 text-sm font-medium ${isActive} border rounded hover:bg-gray-100" onclick="changePage(${i}, '${dataString}')">${i}</a>`;
+        }
+    
+        pagination.innerHTML = prevButton + ' ' + pageLinks + ' ' + nextButton;
+    }
+    
+    window.changePage = function(page, dataString) {
+        const data = JSON.parse(decodeURIComponent(dataString));
+        const pageCount = Math.ceil(data.length / rowsPerPage);
+        if (page < 1 || page > pageCount) return;
+        currentPage = page;
+        renderTable(currentPage, data);
+        renderPagination(data);
+    }
+    
+    /*
+    ページネーション
+    */
 });
