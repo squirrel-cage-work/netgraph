@@ -38,6 +38,21 @@
 
 ## example of data query
 
+### /switches/{deviceName}/intrefaces
+
+* POST : create an interface of the switch and relationship between the switch and an interface. It represents the relationship between the switch and the interface.  
+```
+MATCH (s:Switch {name: $deviceName})
+CREATE (i:Interface {name: $interfaceNumber, Tag: $tags})
+CREATE (s)-[si:HAS_INTERFACE {Type: $interfaceType}]->(i)
+```
+
+* GET : fetch interfaces associated with the switch.
+```
+MATCH (s:Switch {name: $deviceName})-[si:HAS_INTERFACE]->(i:Interface)
+RETURN i, si;
+```
+
 ## features
 
 1. Multi-tenant support: Tenant attributes on each node and relationship allow resource sharing by multiple users or groups.
