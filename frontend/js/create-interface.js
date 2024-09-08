@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${interfaceData.interfaceNumber}</td>
           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${interfaceData.tenantName || ''}</td>
           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-              <select class="form-select text-gray-600" data-interface-number="${interfaceData.interfaceNumber}">
+              <select class="form-select text-gray-600" data-interface-number="${interfaceData.interfaceNumber}" data-tenant-name="${interfaceData.tenantName || ''}" data-interface-type="${interfaceData.interfaceType}">
                   <option value="">Select Action</option>
                   <option value="delete">Delete</option>
               </select>
@@ -192,13 +192,16 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // Interface List のプルダウンとして delete を選択されたら発火
     interfacesListHtml.addEventListener('change', async function (event){
-        console.log(event);
         if (event.target.classList.contains('form-select')){
             const select = event.target;
             const action = select.value;
-            console.log(select.dataset);
+
             const interfaceNumber = select.dataset.interfaceNumber;
+            const interfaceType   = select.dataset.interfaceType;
+            const tenantName      = select.dataset.tenantName;
             console.log(interfaceNumber);
+            console.log(interfaceType);
+            console.log(tenantName);
             //console.log(event);
             if (action == 'delete') {
                 alert('ほげ');
