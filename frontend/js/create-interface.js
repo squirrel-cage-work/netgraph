@@ -189,10 +189,10 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             if (response.ok) {
-                alert('Success to post switch via API.');
+                alert('Success to post interface via API.');
                 return await response.json();
             } else {
-                alert('Fail to post switch via API')
+                alert('Fail to post interface via API')
             }
 
         } catch (e) {
@@ -200,7 +200,26 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    console.log(interfacesListHtml);
+
+    async function deleteInterfaces (deviceName, requestBody) {
+        try {
+            const response = await fetch(switchesDeviceNameInterfacesApiUrl + '/' + deviceName + '/interfaces', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            });
+            console.log(requestBody);
+            if (response.ok) {
+                alert('Success to delete interface via API.');
+            } else {
+                alert('Fail to delete interface via API.')
+            };
+        } catch (e) {
+            alert(e);
+        }
+    }
     
     // Interface List のプルダウンとして delete を選択されたら発火
     interfacesListHtml.addEventListener('change', async function (event){
@@ -211,20 +230,26 @@ document.addEventListener("DOMContentLoaded", function () {
             const interfaceNumber = select.dataset.interfaceNumber;
             const interfaceType   = select.dataset.interfaceType;
             const tenantName      = select.dataset.tenantName;
-            console.log(interfaceNumber);
-            console.log(interfaceType);
-            console.log(tenantName);
-            //console.log(event);
+
+            requestBody = [
+                {
+                    "properties": {
+                      "interfaceType": interfaceType,
+                      "interfaceNumber": interfaceNumber,
+                      "tags": true
+                    }
+                }
+            ]
+
             if (action == 'delete') {
-                alert('ほげ');
-                showDeletePopup(interfaceNumber);
+                showDeletePopup(interfaceNumber,requestBody);
             }
 
         }
     });
 
     // プルダウンとして delete を選択したら popup を表示
-    function showDeletePopup(interfaceNumber) {
+    function showDeletePopup(interfaceNumber,requestBody) {
         const popup = document.createElement('div');
         //const popup = document.getElementById('popupContainer')
         popup.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center';
@@ -244,8 +269,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.getElementById('confirmDelete').addEventListener('click', async () => {
             //await deleteSwitch(interfaceNumber);
+            deleteInterfaces(deviceName,requestBody);
             popup.remove();
             currentPopup = null;
+            loadInitialData();
         });
         document.getElementById('cancelDelete').addEventListener('click', () => {
             popup.remove();
