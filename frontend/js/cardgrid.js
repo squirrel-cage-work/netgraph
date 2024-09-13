@@ -1,11 +1,27 @@
-const cardContainer = document.querySelectorAll('.cardContainer');
+import { restApiDataFetcher } from './restApiFetcher.js';
 
+const apiUrlDevices = config.apiUrlDevices;
+const cardContainers = document.querySelectorAll('.cardContainer');
 
-cardContainer.forEach(cardContainer => {
-    const cardTitle = cardContainer.getAttribute('cardTitle');
-    const cardValue = cardContainer.getAttribute('cardValue');
+const updateCardContiners = async () => {
 
-    const cardHtml = `
+    for (const cardContainer of cardContainers) {
+
+        const cardTitle = cardContainer.getAttribute('cardTitle');
+        const deviceKind = cardContainer.getAttribute('deviceKind');
+
+        const restApiFetcher = new restApiDataFetcher(apiUrlDevices + '/' + deviceKind);
+        let deviceCount = ''
+
+        try {
+            const apiResp = await restApiFetcher.getData();
+            deviceCount = apiResp.length;           
+        } catch (error) {
+            console.error('Fetch GET error:', error);
+            deviceCount = 'Error'
+        }
+
+        const cardHtml  = `
         <div class="bg-white overflow-hidden shadow rounded-lg">
         <div class="p-5">
             <div class="flex items-center">
@@ -19,7 +35,7 @@ cardContainer.forEach(cardContainer => {
                         </dt>
                         <dd>
                             <div class="text-lg font-medium text-gray-900">
-                                ${cardValue}
+                                ${deviceCount}
                             </div>
                         </dd>
                     </dl>
@@ -35,7 +51,8 @@ cardContainer.forEach(cardContainer => {
         </div>
     </div>
     `;
-
     cardContainer.innerHTML = cardHtml;
+    }
+}
 
-});
+updateCardContiners();
