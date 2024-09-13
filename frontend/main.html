@@ -4,41 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NetGraph Dashboard</title>
-    <link href="css/style.css" rel="stylesheet">
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="js/config.js" defer></script>
     <script src="js/menu.js" defer></script>
-    <script src="js/dashboard-count.js" defer></script>
     <script src="js/header.js" defer></script>
-    <script src="js/card.js" defer></script>
+    <script type="module" src="js/cardgrid.js" defer></script>
 </head>
 <body class="h-full">
+    <!-- flexbox to set overall layout -->
     <div class="min-h-full flex">
-        <!-- menu -->
+        <!-- menu section -->
         <div id="menu-container" class="w-64 flex-shrink-0"></div>
-        <!-- Main Content Area -->
+        <!-- main content area -->
         <div class="flex-1 flex flex-col overflow-hidden">
-
-            <!-- header -->
+            <!-- header section -->
             <div id="headerContainer" headerTitle="Dashboard"></div>
-
-            <!-- main -->
+            <!-- main content -->
             <main class="flex-1 overflow-y-auto bg-gray-100">
                 <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                     <div class="px-4 py-6 sm:px-0">
-                        <!-- card -->
+                        <!-- card grid -->
                         <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                            <div class="cardContainer" cardTitle="The total number of devices" cardValue="1111"></div>
-                            <div class="cardContainer" cardTitle="The total number of switches" cardValue="1234"></div>
-                            <div class="cardContainer" cardTitle="The total number of routers" cardValue="7777"></div>
+                            <div class="cardContainer" cardTitle="The total number of switches" deviceKind="switches"></div>
+                            <div class="cardContainer" cardTitle="The total number of interfaces" deviceKind="interfaces"></div>
+                            <div class="cardContainer" cardTitle="The total number of routers" deviceKind="routers"></div>
                         </div>
-                        <!-- card -->
                     </div>
                 </div>
             </main>
-            <!-- main -->
         </div>
     </div>
 </body>
