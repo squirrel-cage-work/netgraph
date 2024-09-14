@@ -5,7 +5,13 @@ const createType = createTableContainer.getAttribute('createType');
 
 // create table 
 const createTableHtml = `
-<h2 class="text-lg font-bold mb-4">${createType} list</h2>
+<h2 class="text-lg font-bold mb-4 flex items-center">
+    ${createType} list
+    <!-- アイコンボタン -->
+    <button id="reloadButton" class="ml-4 p-1 text-white bg-green-600 hover:bg-green-700 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 flex items-center justify-center">
+        <i class="fas fa-sync-alt text-xs"></i>
+    </button>
+</h2>
 <!--
 <div class="mb-4">
     <input type="text" id="searchSwitch" placeholder="Search switches..."
@@ -72,10 +78,6 @@ if (createType == 'tenants') {
         ];
     }
 }
-
-
-
-
 
 // create table header from columns object
 function createTableHeader(columns) {
@@ -249,6 +251,31 @@ async function showDeletePopup(targetName) {
     });
 };
 
+// reload
+document.getElementById('reloadButton').addEventListener('click', async () => {
+    if (createType == 'tenants') {
+        try {
+            const restApiFetcher = new restApiDataFetcher(apiUrl + createType);
+            const apiResp = await restApiFetcher.getData();
+            const apiRespjson = await apiResp.json();
+    
+            columns = [
+                { key: 'tenantName'},
+                { key: 'actions'}
+            ]
+    
+            for (let i = 0; i < apiRespjson.length; i++) {
+                items.push({'tenantName': apiRespjson[i].deviceName});
+            }
+        } catch (error) {
+            
+        }
+    }
+    currentPage = 1; // Reset to the first page
+    createTableHeader(columns);
+    updateTable(items, columns);
+    showPopup();
+});
 
 // Initial loaded
 createTableHeader(columns);
