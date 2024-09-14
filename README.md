@@ -1,17 +1,11 @@
 # Network Topology Management Project: netgraph (開発中/under development)
 
 The project aims to use a graph database to manage complex network topologies.
-Learn more about dashboards [here](https://github.com/squirrel-cage-work/netgraph/tree/main/dashboard) and about backend [here](https://github.com/squirrel-cage-work/netgraph/tree/main/backend).
+Learn more about dashboards [here](https://github.com/squirrel-cage-work/netgraph/tree/main/frontend) and about backend [here](https://github.com/squirrel-cage-work/netgraph/tree/main/backend).
 
-## 概要
+## Overview 
 
-現状のこのグラフデータベースではネットワークスイッチ、ルータ、インターフェース、VLANの関係を表現して管理することができます。主要なコンポーネントと関係性は以下の通りです。
-
-1. **Switch**: ネットワークスイッチ
-2. **Router**: ネットワークルータ
-3. **Interface**: 物理インターフェース
-4. **VLAN**: VLAN
-5. **VRF**: VRF
+The goal of this project is to represent and manage the relationships between network switches, routers, interfaces, and VLANs using graph database (neo4j). Data modeling can be found [here](https://github.com/squirrel-cage-work/netgraph/blob/main/docs/graph_architecture.md).
 
 ## Initial Setup
 
