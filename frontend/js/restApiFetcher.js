@@ -9,8 +9,7 @@ export class restApiDataFetcher {
             const response = await fetch(this.apiUrl, {
                 method: 'GET'
             });
-            const data = await response.json();
-            return data;
+            return response;
         } catch (error) {
             console.error('Fetch GET error:', error);
             return null;
@@ -27,8 +26,7 @@ export class restApiDataFetcher {
                 },
                 body: JSON.stringify(bodyData)
             });
-            const data = await response.json();
-            return data;
+            return response;
         } catch (error) {
             console.error('Fetch POST error:', error);
             return null;
@@ -45,8 +43,7 @@ export class restApiDataFetcher {
                 },
                 body: JSON.stringify(bodyData)
             });
-            const data = await response.json();
-            return data;
+            return response;
         } catch (error) {
             console.error('Fetch PUT error:', error);
             return null;
@@ -54,12 +51,16 @@ export class restApiDataFetcher {
     }
 
     // DELETEリクエスト
-    async deleteData(id) {
+    async deleteData(bodyData) {
         try {
-            const response = await fetch(`${this.apiUrl}/${id}`, {
-                method: 'DELETE'
+            const response = await fetch(this.apiUrl, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(bodyData)
             });
-            return 'Resource deleted successfully';
+            return response;
         } catch (error) {
             console.error('Fetch DELETE error:', error);
             return null;
