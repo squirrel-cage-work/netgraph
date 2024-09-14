@@ -10,12 +10,14 @@ const updateCardContiners = async () => {
         const cardTitle = cardContainer.getAttribute('cardTitle');
         const deviceKind = cardContainer.getAttribute('deviceKind');
 
-        const restApiFetcher = new restApiDataFetcher(apiUrlDevices + '/' + deviceKind);
+        const restApiFetcher = new restApiDataFetcher(apiUrlDevices + deviceKind);
         let deviceCount = ''
 
         try {
             const apiResp = await restApiFetcher.getData();
-            deviceCount = apiResp.length;           
+            const apiRespjson = await apiResp.json();
+            deviceCount = apiRespjson.length;
+            //deviceCount = apiResp.length;           
         } catch (error) {
             console.error('Fetch GET error:', error);
             deviceCount = 'Error'
