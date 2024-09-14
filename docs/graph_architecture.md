@@ -15,6 +15,10 @@
     * properties: name, Tenant
     * example: ``` CREATE (vr:VRF {name: '10', Tenant: '[UserA]'})```
 
+1. Tenant
+    * properties: name
+    * example: ```(t:Tenant {name: 'UserA'})```
+
 ## relationship
 
 1. HAS_INTERFACE
