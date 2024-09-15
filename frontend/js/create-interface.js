@@ -112,16 +112,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const row = document.createElement('tr');
         row.className = 'bg-gray-50';
         row.innerHTML = `
-            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
-                <input type="text" id="interfaceType${interfaceIndex}" name="interfaceType${interfaceIndex}" class="w-full px-2 py-1 placeholder-gray-400 text-gray-700 bg-white rounded border border-gray-300 text-sm shadow focus:outline-none focus:ring focus:border-blue-300" required>
+            <td class="px-6 py-1 whitespace-nowrap text-sm font-medium text-gray-900">
+                <input type="text" id="interfaceType${interfaceIndex}" name="interfaceType${interfaceIndex}" class="w-20 px-1 py-0.5 placeholder-gray-400 text-gray-700 bg-white rounded border border-gray-300 text-sm shadow focus:outline-none focus:ring focus:border-blue-300" required>
             </td>
-            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+            <td class="px-6 py-1 whitespace-nowrap text-sm font-medium text-gray-900">
                 <input type="text" id="interfaceNumber${interfaceIndex}" name="interfaceNumber${interfaceIndex}" class="w-full px-2 py-1 placeholder-gray-400 text-gray-700 bg-white rounded border border-gray-300 text-sm shadow focus:outline-none focus:ring focus:border-blue-300" required>
             </td>
-            <td class="px-6 py-2 whitespace-nowrap text-center">
+            <td class="px-6 py-1 whitespace-nowrap text-center">
                 <input type="checkbox" id="tag${interfaceIndex}" name="tag${interfaceIndex}" class="mt-1">
             </td>
-            <td class="px-6 py-2 text-right">
+            <td class="px-6 py-1 text-right">
                 <button type="button" class="text-red-500 hover:text-red-700 delete-button" onclick="removeInterface(this)">Delete</button>
             </td>
         `;
