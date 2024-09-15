@@ -4,6 +4,7 @@ const createTableContainer = document.getElementById('createTableContainer');
 const createType = createTableContainer.getAttribute('createType');
 const apiUrlTenantsTenantName = config.apiUrlTenantsTenantName;
 const apiUrlSwitchesDeviceName = config.apiUrlSwitchesDeviceName;
+const apiUrlSwitchesDeviceNameinterfaces = config.apiUrlSwitchesDeviceNameinterfaces;
 
 let columns = [];
 let items = [];
@@ -77,21 +78,28 @@ async function getDevicesInfo (createType) {
                 });
             }
         } else if ( createType === 'interfaces') {
+            const deviceNameInterfaces = document.getElementById('deviceName').value;
+            const apiUrlInterfaces = apiUrlSwitchesDeviceNameinterfaces + 'switches/' + deviceNameInterfaces + '/interfaces';
+            const restApiFetcherInterfaces = new restApiDataFetcher(apiUrlInterfaces);
+            const apiResp = await restApiFetcherInterfaces.getData();
+            const apiRespJson = await apiResp.json();
             columns = [
                 { key: 'interfaceName' },
                 { key: 'interfaceType'},
+                { key: 'tag'},
                 { key: 'actions' }
             ];
-            items = [
-                { 'interfaceName': '0/1', 'interfaceType': 'GigabitEthernet'},
-                { 'interfaceName': '0/2', 'interfaceType': 'GigabitEthernet'},
-                { 'interfaceName': '0/3', 'interfaceType': 'GigabitEthernet'},
-                { 'interfaceName': '0/4', 'interfaceType': 'GigabitEthernet'},
-                { 'interfaceName': '0/5', 'interfaceType': 'GigabitEthernet'},
-                { 'interfaceName': '0/6', 'interfaceType': 'GigabitEthernet'},
-                { 'interfaceName': '0/7', 'interfaceType': 'GigabitEthernet'},
-                { 'interfaceName': '0/8', 'interfaceType': 'GigabitEthernet'}
-            ]
+            console.log(apiRespJson);
+            for ( let item of apiRespJson ) {
+                items.push(
+                    {
+                        'interfaceName': item.properties.interfaceNumber,
+                        'interfaceType': item.properties.interfaceType,
+                        'tag': item.properties.tags
+                    }
+                );
+                console.log(item);
+            };
         }
         
         return { columns, items };
@@ -230,7 +238,7 @@ function createTableBody(items, columns) {
                 tableBodyCell.style.width = `${100 / columns.length}%`;
 
                 const link = document.createElement('a');
-                link.href = `create-interface.html?deviceName=${encodeURIComponent(item[column.key])}`;
+                link.href = `switchInterfaces.html?deviceName=${encodeURIComponent(item[column.key])}`;
                 link.textContent = 'link'; // リンクテキストを設定
                 link.target = '_blank'; 
 
