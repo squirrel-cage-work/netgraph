@@ -2,6 +2,8 @@ import { restApiDataFetcher } from './restApiFetcher.js';
 
 const createTableContainer = document.getElementById('createTableContainer');
 const createType = createTableContainer.getAttribute('createType');
+const apiUrlTenantsTenantName = config.apiUrlTenantsTenantName;
+const apiUrlSwitchesDeviceName = config.apiUrlSwitchesDeviceName;
 
 let columns = [];
 let items = [];
@@ -36,7 +38,7 @@ createTableContainer.innerHTML = createTableHtml;
 // create columns and items from api
 
 const apiUrl = config.apiUrlDevices;
-const apiUrlTenantsTenantName = config.apiUrlTenantsTenantName;
+
 
 async function getDevicesInfo (createType) {
     let columns = [];
@@ -48,6 +50,7 @@ async function getDevicesInfo (createType) {
         if (createType === 'switches') {
             columns = [
                 {key: 'deviceName'},
+                {key: 'interface'},
                 {key: 'tenantName'},
                 {key: 'actions'}
             ];
@@ -58,6 +61,7 @@ async function getDevicesInfo (createType) {
 
                 items.push({
                     'deviceName': deviceName,
+                    'interface': deviceName,
                     'tenantName': tenantName
                 });
             }
@@ -196,6 +200,20 @@ function createTableBody(items, columns) {
                 tableBodyCell.appendChild(select);
                 tableBodyRow.appendChild(tableBodyCell);   
 
+            } else if (column.key == 'interface') {
+ 
+                const tableBodyCell = document.createElement('td');
+                tableBodyCell.classList.add('px-6', 'py-4', 'whitespace-nowrap', 'text-sm', 'text-gray-500');
+                tableBodyCell.style.width = `${100 / columns.length}%`;
+
+                const link = document.createElement('a');
+                link.href = `create-interface.html?deviceName=${encodeURIComponent(item[column.key])}`;
+                link.textContent = 'link'; // リンクテキストを設定
+                link.target = '_blank'; 
+
+                tableBodyCell.appendChild(link);
+                tableBodyRow.appendChild(tableBodyCell);
+
             } else {
                 const tableBodyCell = document.createElement('td');
                 tableBodyCell.classList.add('px-6', 'py-4', 'whitespace-nowrap', 'text-sm', 'text-gray-500');
@@ -247,12 +265,20 @@ async function showDeletePopup(targetName) {
 
     document.getElementById('confirmDelete').addEventListener('click', async function () {
 
-        try {
-            const restApiFetcher = new restApiDataFetcher(apiUrlTenantsTenantName + targetName);
-            const apiResp = await restApiFetcher.deleteData();
-            
-        } catch (error) {
-            alert(error);
+        if (createType === 'tenants') {
+            try {
+                const restApiFetcher = new restApiDataFetcher(apiUrlTenantsTenantName + targetName);
+                const apiResp = await restApiFetcher.deleteData();    
+            } catch (error) {
+                alert(error);
+            }
+        } else if (createType === 'switches') {
+            try {
+                const restApiFetcher = new restApiDataFetcher(apiUrlSwitchesDeviceName + targetName);
+                const apiResp = await restApiFetcher.deleteData();    
+            } catch (error) {
+                alert(error);
+            }
         }
 
         document.body.removeChild(popup);
