@@ -76,19 +76,42 @@ async function getDevicesInfo (createType) {
                     'tenantName': apiRespJson[i].deviceName
                 });
             }
+        } else if ( createType === 'interfaces') {
+            columns = [
+                { key: 'interfaceName' },
+                { key: 'interfaceType'},
+                { key: 'actions' }
+            ];
+            items = [
+                { 'interfaceName': '0/1', 'interfaceType': 'GigabitEthernet'},
+                { 'interfaceName': '0/2', 'interfaceType': 'GigabitEthernet'},
+                { 'interfaceName': '0/3', 'interfaceType': 'GigabitEthernet'},
+                { 'interfaceName': '0/4', 'interfaceType': 'GigabitEthernet'},
+                { 'interfaceName': '0/5', 'interfaceType': 'GigabitEthernet'},
+                { 'interfaceName': '0/6', 'interfaceType': 'GigabitEthernet'},
+                { 'interfaceName': '0/7', 'interfaceType': 'GigabitEthernet'},
+                { 'interfaceName': '0/8', 'interfaceType': 'GigabitEthernet'}
+            ]
         }
         
         return { columns, items };
 
     } catch (error) {
         columns = [
-            { key: 'tenantName'},
-            { key: 'actions'}
+            { key: 'interfaceName' },
+            { key: 'interfaceType'},
+            { key: 'actions' }
         ];
         items = [
-            { tenantName: 'UserA'},
-            { tenantName: 'UserB'}
-        ];
+            { 'interfaceName': '0/1', 'interfaceType': 'GigabitEthernet'},
+            { 'interfaceName': '0/2', 'interfaceType': 'GigabitEthernet'},
+            { 'interfaceName': '0/3', 'interfaceType': 'GigabitEthernet'},
+            { 'interfaceName': '0/4', 'interfaceType': 'GigabitEthernet'},
+            { 'interfaceName': '0/5', 'interfaceType': 'GigabitEthernet'},
+            { 'interfaceName': '0/6', 'interfaceType': 'GigabitEthernet'},
+            { 'interfaceName': '0/7', 'interfaceType': 'GigabitEthernet'},
+            { 'interfaceName': '0/8', 'interfaceType': 'GigabitEthernet'}
+        ]
         return { columns, items };
     }
 }
