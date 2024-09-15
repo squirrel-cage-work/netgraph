@@ -41,6 +41,14 @@ createNameForm.addEventListener('submit',  async function(event) {
 
         alert('success !!')
         createNameForm.reset();
-    }
+    } else if (createType == 'switches') {
+        const apiUrlSwitchesDeviceName = config.apiUrlSwitchesDeviceName;
+        const restApiFetcher = new restApiDataFetcher(apiUrlSwitchesDeviceName + createTypeNameValue);
+        const apiResp = await restApiFetcher.postData();
 
+        alert('success !!')
+        createNameForm.reset();
+    } else {
+        alert('Invalid createType');
+    }
 });
