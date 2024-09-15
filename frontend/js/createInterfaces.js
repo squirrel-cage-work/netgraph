@@ -1,5 +1,12 @@
+import { restApiDataFetcher } from './restApiFetcher.js';
+console.log(config);
+
+const apiUrlSwitchesDeviceNameinterfaces = config.apiUrlSwitchesDeviceNameinterfaces;
+console.log(apiUrlSwitchesDeviceNameinterfaces);
 const interfacesContainer = document.getElementById('interfacesContainer');
 const addInterfaces = document.getElementById('addInterfaces');
+const createInterfaces = document.getElementById('createInterfaces');
+const deviceName = document.getElementById('deviceName').value;
 let interfaceIndex = 0;
 
 function addInterfaceTable() {
@@ -25,10 +32,47 @@ function addInterfaceTable() {
 
 }
 
+async function createInterfaceTableBody () {
+
+    let requestBody = [];
+    const apiUrl = apiUrlSwitchesDeviceNameinterfaces + 'switches/' + deviceName + '/interfaces';
+
+    const restApiFetcher = new restApiDataFetcher(apiUrl);
+    
+    for  (let i = 1; i <= interfaceIndex; i++) {
+        let interfaceType = document.querySelector(`#interfaceType${i}`);
+        let interfaceNumber = document.querySelector(`#interfaceNumber${i}`);
+        let tag = document.querySelector(`#tag${i}`);
+        requestBody.push(
+            {
+                "properties": {
+                    "interfaceType": interfaceType.value,
+                    "interfaceNumber": interfaceNumber.value,
+                    "tags": tag.checked
+                }
+            }
+        );
+    }
+
+    const apiResp = await restApiFetcher.postData(requestBody);
+
+    const interfacesContainerTr = interfacesContainer.getElementsByTagName('tr');
+
+    for (let i = interfacesContainerTr.length - 1; i >= 0; i--)  {
+        interfacesContainerTr[i].remove();
+    }
+
+    interfaceIndex = 0;
+}
+
 // EventListener
 
 addInterfaces.addEventListener('click', function () {
     addInterfaceTable();
+});
+
+createInterfaces.addEventListener('click', function () {
+    createInterfaceTableBody();
 });
 
 window.removeInterface = function(button) {
