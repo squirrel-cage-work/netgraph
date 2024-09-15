@@ -9,18 +9,8 @@
     <script src="js/config.js" defer></script>
     <script src="js/menu.js" defer></script>
     <script src="js/getDeviceNameFromQueryParam.js" defer></script>
-    <script src="js/createInterfaces.js" defer></script>
-    <!--
-    <script src="js/devices-switches.js" defer></script>
-    -->
-    <!-- insert header-->
     <script src="js/header.js" defer></script>
-    <!--
-    <script type="module" src="js/createForm.js" defer></script>
-    -->
-    <!--
-    <script type="module" src="js/cardGrid.js" defer></script>
-    -->
+    <script type="module" src="js/createInterfaces.js" defer></script>
     <script type="module" src="js/commonTable.js" defer></script>
 </head>
 <body class="h-full"></body>
@@ -42,7 +32,7 @@
                         </div>
                     </form>
                 </div>
-                <!-- -->
+                <!-- create interface form -->
                 <form id="createInterfaceForm">
                     <div class="p-6">
                         <div class="overflow-y-auto max-h-64">
@@ -55,13 +45,12 @@
                                         <th class="px-6 py-3"></th>
                                     </tr>
                                 </thead>
-                                <tbody id="interfacesContainer" class="bg-white divide-y divide-gray-200">
-                                    <!-- インターフェース入力エリア -->
-                                </tbody>
+                                <!-- insert table body from javascript-->
+                                <tbody id="interfacesContainer" class="bg-white divide-y divide-gray-200"></tbody>
                             </table>
                         </div>
                         <button type="button" id="addInterfaces" class="mt-4 bg-blue-500 hover:bg-gray-200 text-white text-sm font-bold py-1 px-2 rounded">+ add interfaces</button>
-                        <button type="submit" id="createInterfaces" class="mt-4 bg-green-500 hover:bg-gray-200 text-white font-bold text-sm py-1 px-2 rounded">create intefaces</button>    
+                        <button type="button" id="createInterfaces" class="mt-4 bg-green-500 hover:bg-gray-200 text-white font-bold text-sm py-1 px-2 rounded">create intefaces</button>    
                     </div>
                 </form>
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
