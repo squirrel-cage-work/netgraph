@@ -3,6 +3,9 @@ import { restApiDataFetcher } from './restApiFetcher.js';
 const createTableContainer = document.getElementById('createTableContainer');
 const createType = createTableContainer.getAttribute('createType');
 
+let columns = [];
+let items = [];
+
 // create table 
 const createTableHtml = `
 <h2 class="text-lg font-bold mb-4 flex items-center">
@@ -31,51 +34,58 @@ const createTableHtml = `
 createTableContainer.innerHTML = createTableHtml;
 
 // create columns and items from api
-let columns = [];
-let items =[];
 
 const apiUrl = config.apiUrlDevices;
 const apiUrlTenantsTenantName = config.apiUrlTenantsTenantName;
 
-if (createType == 'tenants') {
+async function getDevicesInfo (createType) {
+    let columns = [];
+    let items = [];
     try {
         const restApiFetcher = new restApiDataFetcher(apiUrl + createType);
         const apiResp = await restApiFetcher.getData();
-        const apiRespjson = await apiResp.json();
+        const apiRespJson = await apiResp.json();
+        if (createType === 'switches') {
+            columns = [
+                {key: 'deviceName'},
+                {key: 'tenantName'},
+                {key: 'actions'}
+            ];
+            for (let i = 0; i < apiRespJson.length; i++) {
 
-        columns = [
-            { key: 'tenantName'},
-            { key: 'actions'}
-        ]
+                const deviceName = apiRespJson[i]?.deviceName || 'Unknown Device';
+                const tenantName = apiRespJson[i]?.properties?.tenant ?? '';
 
-        for (let i = 0; i < apiRespjson.length; i++) {
-            items.push({'tenantName': apiRespjson[i].deviceName});
+                items.push({
+                    'deviceName': deviceName,
+                    'tenantName': tenantName
+                });
+            }
+        } else if ( createType === 'tenants') {
+            columns = [
+                { key: 'tenantName' },
+                { key: 'actions' }
+            ];
+            for (let i = 0; i < apiRespJson.length; i++) {
+                const deviceName = apiRespJson[i]?.deviceName || 'Unknown Device';
+                items.push({
+                    'tenantName': apiRespJson[i].deviceName
+                });
+            }
         }
-
-        console.log(columns);
-        console.log(items);
+        
+        return { columns, items };
 
     } catch (error) {
         columns = [
-            { key: 'tenantName'},
-            { key: 'tenantName'},
-            { key: 'tenantName'},
             { key: 'tenantName'},
             { key: 'actions'}
         ];
         items = [
             { tenantName: 'UserA'},
-            { tenantName: 'UserB'},
-            { tenantName: 'UserC'},
-            { tenantName: 'UserD'},
-            { tenantName: 'UserE'},
-            { tenantName: 'UserF'},
-            { tenantName: 'UserG'},
-            { tenantName: 'UserH'},
-            { tenantName: 'UserI'},
-            { tenantName: 'UserJ'},
-            { tenantName: 'UserK'},
+            { tenantName: 'UserB'}
         ];
+        return { columns, items };
     }
 }
 
@@ -253,31 +263,24 @@ async function showDeletePopup(targetName) {
 
 // reload
 document.getElementById('reloadButton').addEventListener('click', async () => {
-    if (createType == 'tenants') {
-        try {
-            const restApiFetcher = new restApiDataFetcher(apiUrl + createType);
-            const apiResp = await restApiFetcher.getData();
-            const apiRespjson = await apiResp.json();
-    
-            columns = [
-                { key: 'tenantName'},
-                { key: 'actions'}
-            ]
-    
-            for (let i = 0; i < apiRespjson.length; i++) {
-                items.push({'tenantName': apiRespjson[i].deviceName});
-            }
-        } catch (error) {
-            
-        }
-    }
     currentPage = 1; // Reset to the first page
+    const results = await getDevicesInfo(createType);
+    columns = results.columns;
+    items = results.items;
     createTableHeader(columns);
     updateTable(items, columns);
     showPopup();
 });
 
 // Initial loaded
-createTableHeader(columns);
-updateTable(items, columns);
-showPopup ();
+
+async function updateDeviceTable() {
+    const results = await getDevicesInfo(createType);
+    columns  = results.columns;
+    items = results.items;
+    createTableHeader(columns);
+    updateTable(items, columns);
+    showPopup ();
+}
+
+updateDeviceTable();
