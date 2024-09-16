@@ -5,12 +5,13 @@ const createType = createTableContainer.getAttribute('createType');
 const apiUrlTenantsTenantName = config.apiUrlTenantsTenantName;
 const apiUrlSwitchesDeviceName = config.apiUrlSwitchesDeviceName;
 const apiUrlSwitchesDeviceNameinterfaces = config.apiUrlSwitchesDeviceNameinterfaces;
+const apiUrl = config.apiUrlDevices;
 
 let columns = [];
 let items = [];
 
-// create table 
-const createTableHtml = `
+// insert main table
+const renderCreateTableHtml = (type) => `
 <div class="bg-white shadow rounded-lg p-6">
 <h2 class="flex text-lg font-bold mb-4 items-center">
     ${createType} list
@@ -35,95 +36,108 @@ const createTableHtml = `
     </table>
 </div>
 </div>
-`
-createTableContainer.innerHTML = createTableHtml;
+`;
 
-// create columns and items from api
+createTableContainer.innerHTML = renderCreateTableHtml(createType);
 
-const apiUrl = config.apiUrlDevices;
-
-
-async function getDevicesInfo (createType) {
+/*
+    create columns and items list from API
+*/
+async function getDevicesInfo(createType) {
     let columns = [];
     let items = [];
-    try {
-        const restApiFetcher = new restApiDataFetcher(apiUrl + createType);
-        const apiResp = await restApiFetcher.getData();
-        const apiRespJson = await apiResp.json();
-        if (createType === 'switches') {
-            columns = [
-                {key: 'deviceName'},
-                {key: 'interface'},
-                {key: 'tenantName'},
-                {key: 'actions'}
-            ];
+
+    const apiUrls = {
+        'devices': config.apiUrlDevices + createType
+    };
+    // new
+    /*
+        devices for switches and routers
+    */     
+    if (createType === 'switches' || createType === 'routers') {
+        columns = [
+            { key: 'deviceName' },
+            { key: 'interface' },
+            { key: 'tenantName' },
+            { key: 'actions' }
+        ];
+        const restApiFetcher = new restApiDataFetcher(apiUrls['devices']);
+        try {
+            const apiResp = await restApiFetcher.getData();
+            if (!apiResp.ok) {
+                throw new Error(`HTTP error! status: ${apiResp.status}`);
+            } 
+            const apiRespJson = await apiResp.json();
             for (let i = 0; i < apiRespJson.length; i++) {
-
-                const deviceName = apiRespJson[i]?.deviceName || 'Unknown Device';
+                const deviceName = apiRespJson[i]?.deviceName;
                 const tenantName = apiRespJson[i]?.properties?.tenant ?? '';
-
                 items.push({
                     'deviceName': deviceName,
-                    'interface': deviceName,
+                    'interface' : deviceName,
                     'tenantName': tenantName
-                });
+                })
             }
-        } else if ( createType === 'tenants') {
-            columns = [
-                { key: 'tenantName' },
-                { key: 'actions' }
-            ];
+        } catch (error) {
+            console.error('Fetch GET error:', error);
+        }
+    /*
+        tenants
+    */     } else if (createType === 'tenants') {
+        columns = [
+            { key: 'tenantName' },
+            { key: 'actions' }
+        ];
+        const restApiFetcher = new restApiDataFetcher(apiUrls['devices']);
+        try {
+            const apiResp = await restApiFetcher.getData();
+            if (!apiResp.ok) {
+                throw new Error(`HTTP error! status: ${apiResp.status}`);
+            }
+            const apiRespJson = await apiResp.json();
             for (let i = 0; i < apiRespJson.length; i++) {
                 const deviceName = apiRespJson[i]?.deviceName || 'Unknown Device';
                 items.push({
                     'tenantName': apiRespJson[i].deviceName
                 });
             }
-        } else if ( createType === 'interfaces') {
-            const deviceNameInterfaces = document.getElementById('deviceName').value;
-            const apiUrlInterfaces = apiUrlSwitchesDeviceNameinterfaces + 'switches/' + deviceNameInterfaces + '/interfaces';
-            const restApiFetcherInterfaces = new restApiDataFetcher(apiUrlInterfaces);
-            const apiResp = await restApiFetcherInterfaces.getData();
-            const apiRespJson = await apiResp.json();
-            columns = [
-                { key: 'interfaceName' },
-                { key: 'interfaceType'},
-                { key: 'tag'},
-                { key: 'actions' }
-            ];
-            console.log(apiRespJson);
-            for ( let item of apiRespJson ) {
-                items.push(
-                    {
-                        'interfaceName': item.properties.interfaceNumber,
-                        'interfaceType': item.properties.interfaceType,
-                        'tag': item.properties.tags
-                    }
-                );
-                console.log(item);
-            };
+        } catch (error) {
+            console.error('Fetch GET error:', error);
         }
-        
-        return { columns, items };
-
-    } catch (error) {
+    /*
+        interfaces
+    */ 
+    } else if (createType === 'interfaces') {
         columns = [
             { key: 'interfaceName' },
-            { key: 'interfaceType'},
+            { key: 'interfaceType' },
+            { key: 'tag' },
             { key: 'actions' }
         ];
-        items = [
-            { 'interfaceName': '0/1', 'interfaceType': 'GigabitEthernet'},
-            { 'interfaceName': '0/2', 'interfaceType': 'GigabitEthernet'},
-            { 'interfaceName': '0/3', 'interfaceType': 'GigabitEthernet'},
-            { 'interfaceName': '0/4', 'interfaceType': 'GigabitEthernet'},
-            { 'interfaceName': '0/5', 'interfaceType': 'GigabitEthernet'},
-            { 'interfaceName': '0/6', 'interfaceType': 'GigabitEthernet'},
-            { 'interfaceName': '0/7', 'interfaceType': 'GigabitEthernet'},
-            { 'interfaceName': '0/8', 'interfaceType': 'GigabitEthernet'}
-        ]
-        return { columns, items };
+
+        const deviceName = document.getElementById('deviceName').value;
+        const apiUrl     = apiUrlSwitchesDeviceNameinterfaces + 'switches/' + deviceName + '/interfaces';
+
+        const restApiFetcher = new restApiDataFetcher(apiUrl);
+        try {
+            const apiResp = await restApiFetcher.getData();
+            console.log(apiResp)
+            if(!apiResp.ok) {
+                throw new Error(`HTTP error! status: ${apiResp.status}`);
+            }
+            const apiRespJson = await apiResp.json();
+            console.log(apiRespJson);
+            for (let i = 0; i < apiRespJson.length; i++) {
+                items.push({
+                    'interfaceName': apiRespJson[i]?.properties.interfaceNumber,
+                    'interfaceType': apiRespJson[i]?.properties.interfaceType,
+                    'tag': apiRespJson[i]?.properties.tags
+                });
+            }
+        } catch (error) {
+            console.error('Fetch GET error:', error);
+        }
     }
+    return { columns, items };
 }
 
 // create table header from columns object
@@ -132,7 +146,6 @@ function createTableHeader(columns) {
     const tableHeadRow = document.createElement('tr');
 
     tableHead.innerHTML = '';
-
     columns.forEach(column => {
         const headerHeadColumn = document.createElement('th');
         headerHeadColumn.classList.add('px-6', 'py-3', 'text-left', 'text-xs', 'font-medium', 'text-gray-500', 'uppercase', 'tracking-wider');
@@ -140,11 +153,13 @@ function createTableHeader(columns) {
         headerHeadColumn.innerHTML = column.key;
         tableHeadRow.appendChild(headerHeadColumn);
     });
-
     tableHead.appendChild(tableHeadRow);
 }
 
 // pagination logic
+const itemsPerPage = 5;
+let currentPage = 1;
+
 const paginationHtml = `
 <div id="paginationContainer" class="mt-4 flex justify-between items-center">
     <button id="prevPage" class="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" disabled>
@@ -157,9 +172,6 @@ const paginationHtml = `
 </div>
 `;
 createTableContainer.insertAdjacentHTML('beforeend', paginationHtml);
-
-const itemsPerPage = 5;
-let currentPage = 1;
 
 function updateTable(items, columns) {
 
@@ -178,8 +190,8 @@ function updateTable(items, columns) {
 document.getElementById('prevPage').addEventListener('click', () => {
     if (currentPage > 1) {
         currentPage--;
-        updateTable(items,columns);
-        showPopup ();
+        updateTable(items, columns);
+        showPopup();
     }
 });
 
@@ -187,8 +199,8 @@ document.getElementById('nextPage').addEventListener('click', () => {
     const totalPages = Math.ceil(items.length / itemsPerPage);
     if (currentPage < totalPages) {
         currentPage++;
-        updateTable(items,columns);
-        showPopup ();
+        updateTable(items, columns);
+        showPopup();
     }
 });
 
@@ -204,7 +216,7 @@ function createTableBody(items, columns) {
         columns.forEach(column => {
 
             if (column.key == 'actions') {
-                                
+
                 const select = document.createElement('select');
                 select.classList.add('formSelect');
                 select.setAttribute('name', Object.values(item)[0]);
@@ -229,12 +241,12 @@ function createTableBody(items, columns) {
                 const tableBodyCell = document.createElement('td');
                 tableBodyCell.classList.add('px-6', 'py-4', 'whitespace-nowrap', 'text-sm', 'text-gray-500');
                 tableBodyCell.style.width = `${100 / columns.length}%`;
-                
+
                 tableBodyCell.appendChild(select);
-                tableBodyRow.appendChild(tableBodyCell);   
+                tableBodyRow.appendChild(tableBodyCell);
 
             } else if (column.key == 'interface') {
- 
+
                 const tableBodyCell = document.createElement('td');
                 tableBodyCell.classList.add('px-6', 'py-4', 'whitespace-nowrap', 'text-sm', 'text-gray-500');
                 tableBodyCell.style.width = `${100 / columns.length}%`;
@@ -242,7 +254,7 @@ function createTableBody(items, columns) {
                 const link = document.createElement('a');
                 link.href = `switchInterfaces.html?deviceName=${encodeURIComponent(item[column.key])}`;
                 link.textContent = 'link'; // リンクテキストを設定
-                link.target = '_blank'; 
+                link.target = '_blank';
 
                 tableBodyCell.appendChild(link);
                 tableBodyRow.appendChild(tableBodyCell);
@@ -254,7 +266,7 @@ function createTableBody(items, columns) {
 
                 tableBodyCell.innerHTML = item[column.key];
 
-                tableBodyRow.appendChild(tableBodyCell);    
+                tableBodyRow.appendChild(tableBodyCell);
             }
         });
         tableBody.appendChild(tableBodyRow);
@@ -263,11 +275,11 @@ function createTableBody(items, columns) {
 
 // create popup
 
-function showPopup () {
+function showPopup() {
     const formSelect = document.querySelectorAll('.formSelect');
 
     formSelect.forEach(select => {
-        select.addEventListener("change", async function(event) {
+        select.addEventListener("change", async function (event) {
             if (event.target.value == 'delete') {
                 showDeletePopup(event.target.name);
             }
@@ -289,11 +301,11 @@ async function showDeletePopup(targetName) {
     </div>
     `;
     document.body.appendChild(popup);
-    
+
     document.getElementById('cancelDelete').addEventListener('click', function () {
         document.body.removeChild(popup);
         updateTable(items, columns);
-        showPopup ();
+        showPopup();
     });
 
     document.getElementById('confirmDelete').addEventListener('click', async function () {
@@ -301,14 +313,14 @@ async function showDeletePopup(targetName) {
         if (createType === 'tenants') {
             try {
                 const restApiFetcher = new restApiDataFetcher(apiUrlTenantsTenantName + targetName);
-                const apiResp = await restApiFetcher.deleteData();    
+                const apiResp = await restApiFetcher.deleteData();
             } catch (error) {
                 alert(error);
             }
         } else if (createType === 'switches') {
             try {
                 const restApiFetcher = new restApiDataFetcher(apiUrlSwitchesDeviceName + targetName);
-                const apiResp = await restApiFetcher.deleteData();    
+                const apiResp = await restApiFetcher.deleteData();
             } catch (error) {
                 alert(error);
             }
@@ -316,7 +328,7 @@ async function showDeletePopup(targetName) {
 
         document.body.removeChild(popup);
         updateTable(items, columns);
-        showPopup ();
+        showPopup();
     });
 };
 
@@ -335,11 +347,11 @@ document.getElementById('reloadButton').addEventListener('click', async () => {
 
 async function updateDeviceTable() {
     const results = await getDevicesInfo(createType);
-    columns  = results.columns;
+    columns = results.columns;
     items = results.items;
     createTableHeader(columns);
     updateTable(items, columns);
-    showPopup ();
+    showPopup();
 }
 
 updateDeviceTable();
