@@ -11,7 +11,8 @@ let items = [];
 
 // create table 
 const createTableHtml = `
-<h2 class="text-lg font-bold mb-4 flex items-center">
+<div class="bg-white shadow rounded-lg p-6">
+<h2 class="flex text-lg font-bold mb-4 items-center">
     ${createType} list
     <!-- アイコンボタン -->
     <button id="reloadButton" class="ml-4 p-1 text-white bg-green-600 hover:bg-green-700 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 flex items-center justify-center">
@@ -32,6 +33,7 @@ const createTableHtml = `
         <tbody id="tableBody" class="bg-white divide-y divide-gray-200">
         </tbody>
     </table>
+</div>
 </div>
 `
 createTableContainer.innerHTML = createTableHtml;
