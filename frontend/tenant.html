@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja" class="h-full bg-gray-100">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,30 +14,25 @@
     <script type="module" src="js/cardGrid.js" defer></script>
     <script type="module" src="js/commonTable.js" defer></script>
 </head>
+
 <body class="h-full">
     <!-- flexbox to set overall layout -->
     <div class="min-h-full flex">
         <!-- menu section -->
         <div id="menu-container" class="w-1/3 bg-gray-800"></div>
         <!-- main content area -->
-        <div class="flex-1 flex flex-col overflow-hidden">
+        <div class="flex flex-auto flex-col">
             <!-- header section-->
             <div id="headerContainer" headerTitle="Tenant"></div>
             <!-- main contents -->
-            <main class="flex-1 overflow-y-auto bg-gray-100">
-                <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                    <div class="px-4 py-0 sm:px-0">
-                        <!-- card grid-->
-                        <div class="grid grid-cols-1 gap-5 sm:grid-cols-1 lg:grid-cols-1">
-                            <div class="cardContainer" cardTitle="The total number of tenants" deviceKind="tenants"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <main class="flex-1 bg-gray-100">
+                <!-- card grid-->
+                <div class="grid grid-cols-1 py-6 px-4 sm:grid-cols-1 lg:grid-cols-1">
+                    <div class="cardContainer" cardTitle="The total number of tenants" deviceKind="tenants"></div>
                     <!-- create tenant form -->
-                    <div id="createFormContainer" class="px-4 py-6 sm:px-0" createType="tenants"></div>
+                    <div id="createFormContainer" class="pt-6 sm:px-0" createType="tenants"></div>
                     <!-- create table list -->
-                    <div id="createTableContainer" class="bg-white shadow rounded-lg p-6 mt-6" createType="tenants"></div>
+                    <div id="createTableContainer" class="pt-6 sm:px-0" createType="tenants"></div>
                 </div>
             </main>
         </div>
