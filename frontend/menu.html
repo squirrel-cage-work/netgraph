@@ -1,94 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NetGraph</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <style>
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
-
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
-
-        .dropdown-item:hover {
-            background-color: #f1f1f1;
-        }
-    </style>
 </head>
-<body class="bg-gray-100">
-    <div class="flex h-screen bg-gray-100">
-        <div class="hidden md:flex md:flex-shrink-0">
-            <div class="flex flex-col w-64">
-                <div class="flex flex-col h-0 flex-1 bg-gray-800">
-                    <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
-                        <div class="h-16 flex items-center justify-center">
-                            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow">
-                        </div>
-                        <div class="mt-5 flex-grow flex flex-col">
-                            <div class="flex-1 space-y-1">
-                                <a href="main.html" class="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                    <i class="fas fa-home mr-3 h-6 w-6"></i>
-                                    Dashboard
-                                </a>
-                                <a href="tenant.html" class="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                    <i class="fas fa-building mr-3 h-6 w-6"></i>
-                                    Tenant
-                                </a>
-                                <div class="dropdown">
-                                    <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                        <i class="fas fa-network-wired mr-3 h-6 w-6"></i>
-                                        Devices
-                                    </a>
-                                    <ul class="dropdown-menu ml-6">
-                                        <li><a href="devicesSwitches.html" class="dropdown-item text-gray-700 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                            <i class="fas fa-server mr-3 h-5 w-5"></i>
-                                            Switches
-                                        </a></li>
-                                        <li><a href="#" class="dropdown-item text-gray-700 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                            <i class="fas fa-route mr-3 h-5 w-5"></i>
-                                            Routers
-                                        </a></li>
-                                    </ul>
-                                </div>
-                                <div class="dropdown">
-                                    <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                        <i class="fas fa-network-wired mr-3 h-6 w-6"></i>
-                                        Segmentations
-                                    </a>
-                                    <ul class="dropdown-menu ml-6">
-                                        <li><a href="#" class="dropdown-item text-gray-700 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                            <i class="fas fa-server mr-3 h-5 w-5"></i>
-                                            Vlans
-                                        </a></li>
-                                        <li><a href="#" class="dropdown-item text-gray-700 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                            <i class="fas fa-route mr-3 h-5 w-5"></i>
-                                            IPs
-                                        </a></li>
-                                    </ul>
-                                </div>
-                                <a href="" class="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                    <i class="fas fa-users mr-3 h-6 w-6"></i>
-                                    Relations
-                                </a>
-                                <a href="" class="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                    <i class="fas fa-calendar mr-3 h-6 w-6"></i>
-                                    VLAN
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+<body>
+    <div class="flex h-screen flex-col bg-gray-800">
+        <div class="h-32 py-3 flex items-center justify-center">
+            <img class="h-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow">
         </div>
+        <div class="mt-1">
+            <a href="main.html"
+                class="text-gray-300 hover:bg-gray-700 hover:text-white flex items-center px-2 py-2 text-sm rounded-md">
+                <i class= "fas fa-home mr-3 h-3.5 w-4"></i>
+                Dashboard
+            </a>
+            <a href="tenant.html"
+                class="text-gray-300 hover:bg-gray-700 hover:text-white flex items-center px-2 py-2 text-sm rounded-md">
+                <i class="fas fa-home mr-3 h-3.5 w-4"></i>
+                Tenant
+            </a>
+            <div class="dropdown">
+                <a href="#"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white flex items-center px-2 py-2 text-sm rounded-md">
+                    <i class="fas fa-home mr-3 h-3.5 w-4"></i>
+                    Devices
+                </a>
+                <ul class="dropdown-menu ml-6">
+                    <li><a href="devicesSwitches.html"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white flex items-center px-2 py-2 text-sm rounded-md">
+                            <i class="fas fa-home mr-3 h-3.5 w-4"></i>
+                            Switches
+                        </a></li>
+                    <li><a href="devicesRouters.html"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white flex items-center px-2 py-2 text-sm rounded-md">
+                            <i class="fas fa-home mr-3 h-3.5 w-4"></i>
+                            Routers
+                        </a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <a href="#"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white flex items-center px-2 py-2 text-sm rounded-md">
+                    <i class="fas fa-home mr-3 h-3.5 w-4"></i>
+                    Segmentations
+                </a>
+                <ul class="dropdown-menu ml-6">
+                    <li><a href="#"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white flex items-center px-2 py-2 text-sm rounded-md">
+                            <i class="fas fa-home mr-3 h-3.5 w-4"></i>
+                            Vlans
+                        </a></li>
+                    <li><a href="#"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white flex items-center px-2 py-2 text-sm rounded-md">
+                            <i class="fas fa-route mr-3 h-5 w-5"></i>
+                            IPs
+                        </a></li>
+                </ul>
+            </div>
+            <a href=""
+                class="text-gray-300 hover:bg-gray-700 hover:text-white flex items-center px-2 py-2 text-sm rounded-md">
+                <i class="fas fa-home mr-3 h-3.5 w-4"></i>
+                Relations
+            </a>
+        </div>
+    </div>
 </body>
 </html>
