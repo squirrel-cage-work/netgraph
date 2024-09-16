@@ -1,29 +1,11 @@
 import { restApiDataFetcher } from './restApiFetcher.js';
 
+// /{devices} API 
 const apiUrlDevices = config.apiUrlDevices;
+
 const cardContainers = document.querySelectorAll('.cardContainer');
 
-const updateCardContiners = async () => {
-
-    for (const cardContainer of cardContainers) {
-
-        const cardTitle = cardContainer.getAttribute('cardTitle');
-        const deviceKind = cardContainer.getAttribute('deviceKind');
-
-        const restApiFetcher = new restApiDataFetcher(apiUrlDevices + deviceKind);
-        let deviceCount = ''
-
-        try {
-            const apiResp = await restApiFetcher.getData();
-            const apiRespjson = await apiResp.json();
-            deviceCount = apiRespjson.length;
-            //deviceCount = apiResp.length;           
-        } catch (error) {
-            console.error('Fetch GET error:', error);
-            deviceCount = 'Error'
-        }
-
-        const cardHtml  = `
+const renderCardHtml = (title, count) => `
         <div class="bg-white overflow-hidden shadow rounded-lg">
         <div class="p-5">
             <div class="flex items-center">
@@ -33,11 +15,11 @@ const updateCardContiners = async () => {
                 <div class="ml-5 w-0 flex-1">
                     <dl>
                         <dt class="text-sm font-medium text-gray-500 truncate">
-                            ${cardTitle}
+                            ${title}
                         </dt>
                         <dd>
                             <div class="text-lg font-medium text-gray-900">
-                                ${deviceCount}
+                                ${count}
                             </div>
                         </dd>
                     </dl>
@@ -52,8 +34,39 @@ const updateCardContiners = async () => {
             </div>
         </div>
     </div>
-    `;
-    cardContainer.innerHTML = cardHtml;
+`
+
+async function updateCardContiners () {
+
+    // initial loading
+    for (const cardContainer of cardContainers) {
+        const cardTitle = cardContainer.getAttribute('cardTitle');
+        cardContainer.innerHTML = renderCardHtml(cardTitle, 'Loading...');
+    }
+
+    // loading
+    for (const cardContainer of cardContainers) {
+
+        const cardTitle  = cardContainer.getAttribute('cardTitle');
+        const deviceKind = cardContainer.getAttribute('deviceKind');
+        let deviceCount  = '';
+
+        // /{devices} API
+        const restApiFetcher = new restApiDataFetcher(apiUrlDevices + deviceKind);
+
+        try {
+            const apiResp = await restApiFetcher.getData();
+            if (!apiResp.ok) {
+                throw new Error(`HTTP error! status: ${apiResp.status}`);
+            }
+            const apiRespjson = await apiResp.json();
+            deviceCount = apiRespjson.length;
+        } catch (error) {
+            console.error('Fetch GET error:', error);
+            deviceCount = 'Error loading data';
+        }
+
+        cardContainer.innerHTML = renderCardHtml(cardTitle, deviceCount);
     }
 }
 
