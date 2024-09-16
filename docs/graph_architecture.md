@@ -60,14 +60,14 @@ DELETE t
 
 * POST : create a switch.
 ```
-CREATE (t:Tenant {name: $tenantName})
-RETURN t
+CREATE (s:Switch {name: $deviceName})
+RETURN s
 ```
 
 * DELETE : delete a switch
 ```
-MATCH (t:Tenant {name: $tenantName})
-DELETE t
+MATCH (s:Switch {name: $deviceName})
+DELETE s
 ```
 
 ### /switches/{deviceName}/intrefaces
@@ -82,6 +82,35 @@ CREATE (s)-[si:HAS_INTERFACE {Type: $interfaceType}]->(i)
 * GET : fetch interfaces associated with the switch.
 ```
 MATCH (s:Switch {name: $deviceName})-[si:HAS_INTERFACE]->(i:Interface)
+RETURN i, si;
+```
+
+### /routers/{deviceName}
+
+* POST : create a router.
+```
+CREATE (r:Router {name: $deviceName})
+RETURN r
+```
+
+* DELETE : delete a switch
+```
+MATCH (r:Router {name: $deviceName})
+DELETE r
+```
+
+### /routers/{deviceName}/intrefaces
+
+* POST : create an interface of the router and relationship between the router and an interface. It represents the relationship between the router and the interface.  
+```
+MATCH (r:Router {name: $deviceName})
+CREATE (i:Interface {name: $interfaceNumber, Tag: $tags})
+CREATE (r)-[si:HAS_INTERFACE {Type: $interfaceType}]->(i)
+```
+
+* GET : fetch interfaces associated with the router.
+```
+MATCH (r:Router {name: $deviceName})-[si:HAS_INTERFACE]->(i:Interface)
 RETURN i, si;
 ```
 
