@@ -8,16 +8,21 @@
 2. Interface
     * properties: name, Tenant, Tag
     * example: ```(i:Interface {name: '0/1', Tenant: '[UserA, UserB]', Tag: 'True'})```
-3. VLAN
+3. VRF
     * properties: name, Tenant
-    * example: ```(v:VLAN {name: '10', Tenant: '[UserA]'})```
-4. VRF
-    * properties: name, Tenant
-    * example: ``` CREATE (vr:VRF {name: '10', Tenant: '[UserA]'})```
-
-1. Tenant
+    * example: ``` CREATE (vr:Vrf {name: '10', Tenant: '[UserA]'})```
+4. Tenant
     * properties: name
     * example: ```(t:Tenant {name: 'UserA'})```
+
+### vlan scop and vlan id node and properties
+
+1. VLAN scope
+    * properties: name
+    * example: ```(vs:VlanScope {name: 'Cluster1'})```
+1. VLAN
+    * properties: name, Tenant
+    * example: ```(v:Vlan {name: '10', Tenant: '[UserA]'})```
 
 ## relationship
 
@@ -39,6 +44,8 @@
     * note: connection
     * peoperties: Type, Tenant
     * exmaple: ``` (v)-[vv:CONNECTED_TO { Type: "VLAN", Tenant: '[UserA]'}]->(v) ```
+4. HAS_VLAN
+    * note: relationship between vlan scope and vlan
 
 ## example of data query
 
