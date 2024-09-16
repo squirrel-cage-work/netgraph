@@ -25,7 +25,8 @@ async function formApiRequest(type, value) {
 
     const apiUrls = {
         tenants: config.apiUrlTenantsTenantName,
-        switches: config.apiUrlSwitchesDeviceName
+        switches: config.apiUrlSwitchesDeviceName,
+        routers: config.apiUrlRoutersDeviceName
     };
     const apiUrl = apiUrls[type] + value;
 
@@ -61,8 +62,8 @@ async function formApiRequest(type, value) {
 createFormContainer.innerHTML = renderCreateFormHtml(createType);
 
 // eventListner
-createNameForm.addEventListener('submit', function () {
-    
+createNameForm.addEventListener('submit', function (event) {
+    event.preventDefault();
     const createTypeValue = document.getElementById('createTypeName').value;
     const createNameForm  = document.getElementById('createNameForm');
     
