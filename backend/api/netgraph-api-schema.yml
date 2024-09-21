@@ -673,3 +673,237 @@ paths:
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
               method.response.header.Access-Control-Allow-Methods: "'GET,POST,PUT,DELETE, OPTIONS'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
+  /vlanscopes/{scopeName}:
+    post:
+      parameters:
+        - name: deviceName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string       
+    delete:
+      parameters:
+        - name: deviceName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tenantName:
+                    type: string
+        '500':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    options:
+      summary: CORS support
+      description: |
+        Enable CORS by returning correct headers
+      tags:
+      - CORS
+      responses:
+        '200':
+          description: Default response for CORS method
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content: {}
+      x-amazon-apigateway-integration:
+        type: mock
+        requestTemplates:
+          application/json: '{\"statusCode\": 200}'
+        passthroughBehavior: "never"
+        responses:
+          default:
+            statusCode: '200'
+            responseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+              method.response.header.Access-Control-Allow-Methods: "'GET,POST,PUT,DELETE, OPTIONS'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /vlanscopes/{scopeName}/vlans:
+    get:
+      responses:
+        '200':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    properties:
+                      type: object
+                      properties:
+                        vlanid:
+                          type: string
+                          description: sample
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:<accountId>:function:netgraph-switches-deviceName-interfaces-function/invocations
+        credentials: arn:aws:iam::<accountId>:role/APIGatewayLambdaExecutionRole
+    post:
+      parameters:
+        - name: deviceName
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true 
+        description: sample
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  properties:
+                    type: object
+                    properties:
+                      vlanid:
+                        type: string
+                        description: sample
+      responses:
+        '200':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:<accountId>:function:netgraph-switches-deviceName-interfaces-function/invocations
+        credentials: arn:aws:iam::<accountId>:role/APIGatewayLambdaExecutionRole
+    delete:
+      parameters:
+        - name: deviceName
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true 
+        description: sample
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  properties:
+                    type: object
+                    properties:
+                      vlanid:
+                        type: string
+                        description: sample
+      responses:
+        '200':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: sample
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:<accountId>:function:netgraph-switches-deviceName-interfaces-function/invocations
+        credentials: arn:aws:iam::<accountId>:role/APIGatewayLambdaExecutionRole
+    options:
+      summary: CORS support
+      description: |
+        Enable CORS by returning correct headers
+      tags:
+      - CORS
+      responses:
+        '200':
+          description: Default response for CORS method
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content: {}
+      x-amazon-apigateway-integration:
+        type: mock
+        requestTemplates:
+          application/json: '{\"statusCode\": 200}'
+        passthroughBehavior: "never"
+        responses:
+          default:
+            statusCode: '200'
+            responseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+              method.response.header.Access-Control-Allow-Methods: "'GET,POST,PUT,DELETE, OPTIONS'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
