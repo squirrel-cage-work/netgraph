@@ -7,6 +7,10 @@ Learn more about dashboards [here](https://github.com/squirrel-cage-work/netgrap
 
 The goal of this project is to represent and manage the relationships between network switches, routers, interfaces, and VLANs using graph database (neo4j). Data modeling can be found [here](https://github.com/squirrel-cage-work/netgraph/blob/main/docs/graph_architecture.md).
 
+## Getting Start
+
+1. start neo4j aura
+
 ## Initial Setup
 
 Please preconfigure neo4j with the following commands.
