@@ -9,4 +9,8 @@ export const ItemDefinition = {
         { 'deviceName':'device name'}
     ],
 
+    routerItemDefinition: [
+        { 'deviceName':'device name'}
+    ],
+
 };
