@@ -17,9 +17,9 @@
 
 ### vlan scop and vlan id node and properties
 
-1. VLAN scope
+1. VLAN Org
     * properties: name
-    * example: ```(vs:VlanScope {name: 'Cluster1'})```
+    * example: ```(vo:VlanOrg {name: 'Cluster1'})```
 1. VLAN
     * properties: name, Tenant
     * example: ```(v:Vlan {name: '10', Tenant: '[UserA]'})```
