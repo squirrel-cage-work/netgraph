@@ -13,11 +13,10 @@ const CreateForm = (props) => {
     let type = [];
     let apiUrl = '';
 
-    console.log('hoge');
-    console.log(props.deviceType);
-
     /*
-    グラフデータベースに登録したい種別が増えた場合はこちらを修正
+    グラフデータベースに登録したい種別が増えた場合はこちらを修正する API の定義とテーブル定義は以下の jsx にある。
+        config/Config.js
+        config/ItemDefinitions.js
     */
     if (props.deviceType === 'tenants') {
         type = ItemDefinition.tenantItemDefinition;
@@ -25,6 +24,9 @@ const CreateForm = (props) => {
     } else if (props.deviceType === 'switches') {
         type = ItemDefinition.switchItemDefinition;
         apiUrl = ApiConfig.apiUrlSwitchesDeviceName;
+    } else if (props.deviceType === 'routers') {
+        type = ItemDefinition.routerItemDefinition;
+        apiUrl = ApiConfig.apiUrlRoutersDeviceName;
     }
 
     const handleInputChange = (key, value) => {
@@ -41,10 +43,13 @@ const CreateForm = (props) => {
 
         let deviceName = '';
 
+        /*
+        グラフデータベースに登録したい種別が増えた場合はこちらを修正する
+        */
         if (props.deviceType === 'tenants') {
             deviceName = formData['tenantName'];
             console.log(deviceName);
-        } else if (props.deviceType === 'switches') {
+        } else if (props.deviceType === 'switches' || props.deviceType === 'routers') {
             deviceName = formData['deviceName'];
             console.log(deviceName);
         }
