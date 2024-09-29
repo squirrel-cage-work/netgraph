@@ -15,7 +15,7 @@ const menuItems = [
     name: 'Virtuals',
     icon: 'fas fa-home',
     subMenu: [
-      { name: 'Vlans', link: 'virtualsVlanscopes.html', icon: 'fas fa-home' },
+      { name: 'Vlans', link: '/vlan', icon: 'fas fa-home' },
       { name: 'IPs', link: '#', icon: 'fas fa-route' },
     ],
   },
