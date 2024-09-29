@@ -8,7 +8,7 @@ const menuItems = [
     icon: 'fas fa-home',
     subMenu: [
       { name: 'Switches', link: '/switch', icon: 'fas fa-home' },
-      { name: 'Routers', link: 'devicesRouters.html', icon: 'fas fa-home' },
+      { name: 'Routers', link: '/router', icon: 'fas fa-home' },
     ],
   },
   {
