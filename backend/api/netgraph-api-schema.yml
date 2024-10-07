@@ -39,6 +39,13 @@ paths:
         httpMethod: POST
         uri: arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:<accountId>:function:netgraph-tenants-tenantName-function/invocations
         credentials: arn:aws:iam::<accountId>:role/APIGatewayLambdaExecutionRole
+        responses:
+          default:
+            statusCode: '200'
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'POST,DELETE,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
     delete:
       parameters:
         - name: tenantName
@@ -100,7 +107,7 @@ paths:
             statusCode: '200'
             responseParameters:
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
-              method.response.header.Access-Control-Allow-Methods: "'GET,POST,DELETE,OPTIONS'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
   /{devices}:
     get:
@@ -159,7 +166,7 @@ paths:
             statusCode: '200'
             responseParameters:
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
-              method.response.header.Access-Control-Allow-Methods: "'GET, OPTIONS'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
   /switches/{deviceName}:
     post:
@@ -263,7 +270,7 @@ paths:
             statusCode: '200'
             responseParameters:
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
-              method.response.header.Access-Control-Allow-Methods: "'GET,POST,PUT,DELETE, OPTIONS'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
   /switches/{deviceName}/interfaces:
     get:
@@ -430,7 +437,7 @@ paths:
             statusCode: '200'
             responseParameters:
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
-              method.response.header.Access-Control-Allow-Methods: "'GET,POST,PUT,DELETE, OPTIONS'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
   /routers/{deviceName}:
     post:
@@ -534,7 +541,7 @@ paths:
             statusCode: '200'
             responseParameters:
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
-              method.response.header.Access-Control-Allow-Methods: "'GET,POST,PUT,DELETE, OPTIONS'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
   /routers/{deviceName}/interfaces:
     get:
@@ -701,7 +708,7 @@ paths:
             statusCode: '200'
             responseParameters:
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
-              method.response.header.Access-Control-Allow-Methods: "'GET,POST,PUT,DELETE, OPTIONS'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
   /vlanorgs/{orgName}:
     post:
@@ -786,7 +793,7 @@ paths:
             statusCode: '200'
             responseParameters:
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
-              method.response.header.Access-Control-Allow-Methods: "'GET,POST,PUT,DELETE, OPTIONS'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
   /vlanorgs/{orgName}/vlans:
     get:
@@ -935,5 +942,5 @@ paths:
             statusCode: '200'
             responseParameters:
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
-              method.response.header.Access-Control-Allow-Methods: "'GET,POST,PUT,DELETE, OPTIONS'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
