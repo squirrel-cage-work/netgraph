@@ -9,7 +9,7 @@ The goal of this project is to represent and manage the relationships between ne
 
 ## Getting Start
 
-0. build the backend using AWS.
+0. build the backend using AWS [here](https://github.com/squirrel-cage-work/netgraph/tree/main/backend).
 1. start your neo4j aura
 
 ## Initial Setup
