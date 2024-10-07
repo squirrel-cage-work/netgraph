@@ -27,6 +27,8 @@ const CreateForm = (props) => {
     } else if (props.deviceType === 'routers') {
         type = ItemDefinition.routerItemDefinition;
         apiUrl = ApiConfig.apiUrlRoutersDeviceName;
+    } else if (props.deviceType === 'vlans') {
+        type = ItemDefinition.    vlanItemDefinition;
     }
 
     const handleInputChange = (key, value) => {
