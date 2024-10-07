@@ -13,4 +13,8 @@ export const ItemDefinition = {
         { 'deviceName':'device name'}
     ],
 
+    vlanItemDefinition: [
+        { 'vlanid':'vlanid'}
+    ],
+
 };
