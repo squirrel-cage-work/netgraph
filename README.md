@@ -9,7 +9,8 @@ The goal of this project is to represent and manage the relationships between ne
 
 ## Getting Start
 
-1. start neo4j aura
+0. build the backend using AWS.
+1. start your neo4j aura
 
 ## Initial Setup
 
