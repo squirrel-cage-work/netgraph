@@ -1,8 +1,7 @@
 export const ItemDefinition = {
 
     tenantItemDefinition: [
-        { 'tenantName':'tenant name'},
-        { 'pram002':'hoge'}
+        { 'tenantName':'tenant name'}
     ],
 
     switchItemDefinition: [
