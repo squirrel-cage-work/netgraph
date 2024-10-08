@@ -25,23 +25,13 @@ Create a lambda layer using the zip file created above; upload the zip file with
 }
 ```
 
-#### Basic error handling
-
-Query errors from neo4j are basically defined as follows.
-```
-try:
-    results = session.run(query)
-    for record in results:
-        print(record["*****"])
-except Exception as e:
-    response = json.dumps({
-        "statusCode": 500,
-        "body": str(e),
-    })
-    return response 
-finally:
-    session.close()
-```
+* netgraph-devices-function
+* netgraph-tenants-tenantName-function
+* netgraph-switches-deviceName-function
+  * netgraph-switches-deviceName-interfaces-function
+* netgraph-routers-deviceName-function
+* netgraph-vlanorgs-orgName-function
+  * netgraph-vlanorgs-orgName-vlans-function
 
 ### Systems Manager Parameter Store
 
