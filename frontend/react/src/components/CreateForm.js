@@ -60,6 +60,7 @@ const CreateForm = (props) => {
 
         try {
             const response = await apiFetcher.postData();
+            console.log(response);
             if (response.ok) {
                 setSuccessMesage('Form submitted successfully!');
                 setFormData({});
