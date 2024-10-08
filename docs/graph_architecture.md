@@ -46,6 +46,7 @@
     * exmaple: ``` (v)-[vv:CONNECTED_TO { Type: "VLAN", Tenant: '[UserA]'}]->(v) ```
 4. HAS_VLAN
     * note: relationship between vlan scope and vlan
+    * example ```(vo)-[vov:HAS_VLAN]->(v)```
 
 ## example of data query
 
