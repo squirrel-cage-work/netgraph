@@ -10,15 +10,16 @@ function Component() {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const deviceName = searchParams.get('deviceName');
+    const deviceType = searchParams.get('deviceType');
 
     return (
         <div className="flex flex-col px-4">
             <div>
-                <TitleHeader title={deviceName} />
+                <TitleHeader title={deviceName}/>
             </div>
             <div>
                 <main>
-                    <Interface />
+                    <Interface deviceType={deviceType}/>
                 </main>
             </div>
         </div>
