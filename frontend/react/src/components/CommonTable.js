@@ -186,7 +186,7 @@ const CommonTable = (props) => {
                                     ) : null
                                 ))}
                                 <td className="text-center text-sm">
-                                    <a href={`/component?deviceName=${device.deviceName}`} className="text-blue-500 hover:underline">
+                                    <a href={`/component?deviceName=${device.deviceName}&deviceType=${props.type}`} className="text-blue-500 hover:underline">
                                         Edit
                                     </a>
                                 </td>
