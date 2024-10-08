@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { restApiDataFetcher } from './RestApiDataFetcher';
+import { ApiConfig } from '../config/Config';
 
 const interfaceTableDefinition = [
   'interfaceType',
@@ -12,19 +14,25 @@ const interfaceTableDefinitionObject = [{
 
 const Interface = (props) => {
 
-  /*
-  APIパスの定義
-      config/Config.js
-      config/ItemDefinitions.js
-  */
-  if (props.deviceType === 'switches') { 
-
-  }
-
   // テーブルの列データの管理
   const [tableCols, setTableCols] = useState(interfaceTableDefinition);
   // テーブルの行データの管理
   const [tableRows, setTableRows] = useState([{}, {}, {}, {}, {}, {}, {}]);
+  //
+  let apiUrl = '';
+
+  const deviceName = props.deviceName;
+  const deviceType = props.deviceType;
+
+  /*
+  APIパスの定義
+    config/Config.js
+    config/ItemDefinitions.js
+  */
+  if (props.deviceType === 'switches') {
+    apiUrl = ApiConfig.apiUrlSwitchesDeviceName;
+  }
+
 
   // テーブルの行データの追加
   const addTableRows = () => {
@@ -54,6 +62,7 @@ const Interface = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const apiFetcher = new restApiDataFetcher(apiUrl + deviceName + '/interfaces');
     console.log(props.deviceType);
 
     let body = [];
@@ -80,6 +89,19 @@ const Interface = (props) => {
       body.push(elem);
     });
     console.log(body);
+  
+    try {
+      const response = await apiFetcher.postData();
+      console.log(response);
+      if (response.ok) {
+      } else {
+          console.error('Failed to post data');
+      }
+  } catch (error) {
+      console.error('Failed to post data', error);
+  } finally {
+  }
+
   };
 
   return (
