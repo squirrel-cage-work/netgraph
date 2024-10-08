@@ -729,7 +729,12 @@ paths:
                 type: object
                 properties:
                   message:
-                    type: string   
+                    type: string
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:<accountId>:function:netgraph-vlanorgs-orgName-function/invocations
+        credentials: arn:aws:iam::<accountId>:role/APIGatewayLambdaExecutionRole   
     delete:
       parameters:
         - name: deviceName
@@ -756,6 +761,11 @@ paths:
                 properties:
                   message:
                     type: string
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:<accountId>:function:netgraph-vlanorgs-orgName-function/invocations
+        credentials: arn:aws:iam::<accountId>:role/APIGatewayLambdaExecutionRole
     options:
       summary: CORS support
       description: |
@@ -809,7 +819,7 @@ paths:
       x-amazon-apigateway-integration:
         type: aws_proxy
         httpMethod: POST
-        uri: arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:<accountId>:function:netgraph-switches-deviceName-interfaces-function/invocations
+        uri: arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:<accountId>:function:netgraph-vlanorgs-orgName-vlans-function/invocations
         credentials: arn:aws:iam::<accountId>:role/APIGatewayLambdaExecutionRole
     post:
       parameters:
@@ -856,7 +866,7 @@ paths:
       x-amazon-apigateway-integration:
         type: aws_proxy
         httpMethod: POST
-        uri: arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:<accountId>:function:netgraph-switches-deviceName-interfaces-function/invocations
+        uri: arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:<accountId>:function:netgraph-vlanorgs-orgName-vlans-function/invocations
         credentials: arn:aws:iam::<accountId>:role/APIGatewayLambdaExecutionRole
     delete:
       parameters:
@@ -903,7 +913,7 @@ paths:
       x-amazon-apigateway-integration:
         type: aws_proxy
         httpMethod: POST
-        uri: arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:<accountId>:function:netgraph-switches-deviceName-interfaces-function/invocations
+        uri: arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:<accountId>:function:netgraph-vlanorgs-orgName-vlans-function/invocations
         credentials: arn:aws:iam::<accountId>:role/APIGatewayLambdaExecutionRole
     options:
       summary: CORS support
