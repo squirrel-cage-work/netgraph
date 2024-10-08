@@ -19,7 +19,7 @@ function Component() {
             </div>
             <div>
                 <main>
-                    <Interface deviceType={deviceType}/>
+                    <Interface deviceType={deviceType} deviceName={deviceName}/>
                 </main>
             </div>
         </div>
